@@ -15,6 +15,10 @@ class Point {
     ctx.fill()
     // ctx.closePath()
   }
+
+  equals(point: Point) {
+    return this.x === point.x && this.y === point.y
+  }
 }
 
 export default Point

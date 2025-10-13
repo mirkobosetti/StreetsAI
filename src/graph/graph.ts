@@ -21,6 +21,22 @@ class Graph {
       point.draw(ctx)
     }
   }
+
+  addPoint(point: Point) {
+    this.points.push(point)
+  }
+
+  tryAddPoint(point: Point) {
+    if (!this.containsPoint(point)) {
+      this.addPoint(point)
+      return true
+    }
+    return false
+  }
+
+  containsPoint(point: Point): boolean {
+    return this.points.some((p) => p.equals(point))
+  }
 }
 
 export default Graph

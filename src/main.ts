@@ -3,6 +3,15 @@ import Point from './primitives/point'
 import Segment from './primitives/segment'
 import './style.css'
 
+const btnAddPoint = document.getElementById('btnAddPoint') as HTMLButtonElement
+btnAddPoint.addEventListener('click', () => {
+  const added = graph.tryAddPoint(
+    new Point(Math.random() * canvas.width, Math.random() * canvas.height)
+  )
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  graph.draw(ctx)
+})
+
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
