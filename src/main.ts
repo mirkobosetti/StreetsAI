@@ -46,6 +46,14 @@ btnRemoveSegment.addEventListener('click', () => {
   graph.draw(ctx)
 })
 
+const btnClear = document.getElementById('btnClear') as HTMLButtonElement
+btnClear.addEventListener('click', () => {
+  graph.dispose()
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  graph.draw(ctx)
+})
+
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 

@@ -76,6 +76,11 @@ class Graph {
     }
     return s
   }
+
+  dispose() {
+    this.points.length = 0
+    this.segments.length = 0
+  }
 }
 
 export default Graph
