@@ -18,6 +18,12 @@ class Segment {
     ctx.stroke()
     // ctx.closePath()
   }
+
+  /** Check if two segments are equal (i.e., have the same endpoints) */
+  equals = (segment: Segment) => this.includes(segment.p1) && this.includes(segment.p2)
+
+  /** Check if the segment includes the given point */
+  includes = (point: Point) => this.p1.equals(point) || this.p2.equals(point)
 }
 
 export default Segment

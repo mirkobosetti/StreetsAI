@@ -34,8 +34,24 @@ class Graph {
     return false
   }
 
+  addSegment(segment: Segment) {
+    this.segments.push(segment)
+  }
+
+  tryAddSegment(segment: Segment) {
+    if (!this.containsSegment(segment) && !segment.p1.equals(segment.p2)) {
+      this.addSegment(segment)
+      return true
+    }
+    return false
+  }
+
   containsPoint(point: Point): boolean {
     return this.points.some((p) => p.equals(point))
+  }
+
+  containsSegment(segment: Segment): boolean {
+    return this.segments.some((s) => s.equals(segment))
   }
 }
 

@@ -12,6 +12,18 @@ btnAddPoint.addEventListener('click', () => {
   graph.draw(ctx)
 })
 
+const btnAddSegment = document.getElementById('btnAddSegment') as HTMLButtonElement
+btnAddSegment.addEventListener('click', () => {
+  if (graph.points.length < 2) return
+  const index1 = Math.floor(Math.random() * graph.points.length)
+  const index2 = Math.floor(Math.random() * graph.points.length)
+
+  const added = graph.tryAddSegment(new Segment(graph.points[index1], graph.points[index2]))
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  graph.draw(ctx)
+})
+
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
