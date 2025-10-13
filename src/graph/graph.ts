@@ -1,0 +1,26 @@
+import type Point from '../primitives/point'
+import type Segment from '../primitives/segment'
+
+class Graph {
+  points: Point[]
+  segments: Segment[]
+
+  constructor(points: Point[], segments: Segment[]) {
+    this.points = points
+    this.segments = segments
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    if (!ctx) return
+
+    for (const segment of this.segments) {
+      segment.draw(ctx)
+    }
+
+    for (const point of this.points) {
+      point.draw(ctx)
+    }
+  }
+}
+
+export default Graph
