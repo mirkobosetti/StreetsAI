@@ -34,6 +34,15 @@ class Graph {
     return false
   }
 
+  removePoint(point: Point) {
+    const segmentsToRemove = this.getSegmentsWithPoint(point)
+    for (const segment of segmentsToRemove) {
+      this.removeSegment(segment)
+    }
+
+    this.points.splice(this.points.indexOf(point), 1)
+  }
+
   containsPoint(point: Point): boolean {
     return this.points.some((p) => p.equals(point))
   }
@@ -56,6 +65,16 @@ class Graph {
 
   containsSegment(segment: Segment): boolean {
     return this.segments.some((s) => s.equals(segment))
+  }
+
+  getSegmentsWithPoint(point: Point): Segment[] {
+    const s = []
+    for (const segment of this.segments) {
+      if (segment.includes(point)) {
+        s.push(segment)
+      }
+    }
+    return s
   }
 }
 

@@ -12,6 +12,17 @@ btnAddPoint.addEventListener('click', () => {
   graph.draw(ctx)
 })
 
+const btnRemovePoint = document.getElementById('btnRemovePoint') as HTMLButtonElement
+btnRemovePoint.addEventListener('click', () => {
+  if (graph.points.length === 0) return
+
+  const index = Math.floor(Math.random() * graph.points.length)
+  graph.removePoint(graph.points[index])
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  graph.draw(ctx)
+})
+
 const btnAddSegment = document.getElementById('btnAddSegment') as HTMLButtonElement
 btnAddSegment.addEventListener('click', () => {
   if (graph.points.length < 2) return
