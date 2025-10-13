@@ -24,6 +24,17 @@ btnAddSegment.addEventListener('click', () => {
   graph.draw(ctx)
 })
 
+const btnRemoveSegment = document.getElementById('btnRemoveSegment') as HTMLButtonElement
+btnRemoveSegment.addEventListener('click', () => {
+  if (graph.segments.length === 0) return
+
+  const index = Math.floor(Math.random() * graph.segments.length)
+  graph.removeSegment(graph.segments[index])
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  graph.draw(ctx)
+})
+
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 

@@ -34,6 +34,10 @@ class Graph {
     return false
   }
 
+  containsPoint(point: Point): boolean {
+    return this.points.some((p) => p.equals(point))
+  }
+
   addSegment(segment: Segment) {
     this.segments.push(segment)
   }
@@ -46,8 +50,8 @@ class Graph {
     return false
   }
 
-  containsPoint(point: Point): boolean {
-    return this.points.some((p) => p.equals(point))
+  removeSegment(segment: Segment) {
+    this.segments.splice(this.segments.indexOf(segment), 1)
   }
 
   containsSegment(segment: Segment): boolean {
