@@ -22,6 +22,10 @@ class GraphEditor {
   display() {
     this.graph.draw(this.ctx)
 
+    if (this.hovered) {
+      this.hovered.draw(this.ctx, { fill: true })
+    }
+
     if (this.selected) {
       this.selected.draw(this.ctx, { outline: true })
     }
@@ -37,6 +41,11 @@ class GraphEditor {
       }
       this.graph.tryAddPoint(mouse)
       this.selected = mouse
+    })
+
+    this.canvas.addEventListener('mousemove', (event) => {
+      const mouse = new Point(event.offsetX, event.offsetY)
+      this.hovered = getNearestPoint(mouse, this.graph.points, 10)
     })
   }
 }
