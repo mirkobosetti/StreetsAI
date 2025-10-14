@@ -1,5 +1,5 @@
 import type { drawOptions } from '../types'
-import { distance } from '../utils/utils'
+import { distance, normalize, subtract } from '../utils/utils'
 import type Point from './point'
 
 class Segment {
@@ -21,6 +21,9 @@ class Segment {
     ctx.stroke()
     ctx.setLineDash([])
   }
+
+  /** Get the direction vector of the segment */
+  directionVector = () => normalize(subtract(this.p2, this.p1))
 
   /** Get the length of the segment */
   length = () => distance(this.p1, this.p2)

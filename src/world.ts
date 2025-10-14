@@ -1,32 +1,39 @@
 import type Graph from './graph'
 import Envelope from './primitives/envelope'
+import Point from './primitives/point'
 import Polygon from './primitives/polygon'
-import type Segment from './primitives/segment'
-import type { BuildingOptions, RoadOptions } from './types'
+import Segment from './primitives/segment'
+import type { BuildingOptions, RoadOptions, TreeOptions } from './types'
+import { add, lerp, scale } from './utils/utils'
 
 class World {
   graph: Graph
 
   envelopes: Envelope[]
   roadBorders: Segment[]
-  buildings: Segment[]
+  buildings: Polygon[]
+  trees: Polygon[]
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions
+  treeOptions: TreeOptions
 
   constructor(
     graph: Graph,
     roadOptions: RoadOptions = { width: 100, roundness: 10 },
-    buildingOptions: BuildingOptions = { width: 100, minLength: 150, spacing: 50 }
+    buildingOptions: BuildingOptions = { width: 100, minLength: 150, spacing: 50 },
+    treeOptions: TreeOptions = { size: 160 }
   ) {
     this.graph = graph
 
     this.envelopes = []
     this.roadBorders = []
     this.buildings = []
+    this.trees = []
 
     this.roadOptions = roadOptions
     this.buildingOptions = buildingOptions
+    this.treeOptions = treeOptions
 
     this.generate()
   }
@@ -40,6 +47,7 @@ class World {
 
     this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
     this.buildings = this.generateBuildings()
+    this.trees = this.generateTrees()
   }
 
   private generateBuildings() {
@@ -64,7 +72,72 @@ class World {
       }
     }
 
-    return guides
+    const support = []
+    for (const seg of guides) {
+      const len = seg.length() + this.buildingOptions.spacing
+      const buildingCount = Math.floor(
+        len / (this.buildingOptions.minLength + this.buildingOptions.spacing)
+      )
+      const buildingLength = len / buildingCount - this.buildingOptions.spacing
+      const dir = seg.directionVector()
+
+      let q1 = seg.p1
+      let q2 = add(q1, scale(dir, buildingLength))
+      support.push(new Segment(q1, q2))
+
+      for (let i = 1; i < buildingCount; i++) {
+        q1 = add(q2, scale(dir, this.buildingOptions.spacing))
+        q2 = add(q1, scale(dir, buildingLength))
+        support.push(new Segment(q1, q2))
+      }
+    }
+
+    const bases = []
+    for (const seg of support) {
+      bases.push(new Envelope(seg, this.buildingOptions.width).poly)
+    }
+
+    // looping between all bases to break them at intersections
+    for (let i = 0; i < bases.length - 1; i++) {
+      for (let j = i + 1; j < bases.length; j++) {
+        if (bases[i].intersectsPoly(bases[j])) {
+          bases.splice(j, 1)
+          j--
+        }
+      }
+    }
+
+    return bases
+  }
+
+  private generateTrees(count = 10) {
+    const points = [
+      ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
+      ...this.buildings.map((b) => b.points).flat()
+    ]
+    const left = Math.min(...points.map((p) => p.x))
+    const right = Math.max(...points.map((p) => p.x))
+    const top = Math.min(...points.map((p) => p.y))
+    const bottom = Math.max(...points.map((p) => p.y))
+
+    const illegalPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)]
+
+    const trees: Polygon[] = []
+    while (trees.length < count) {
+      const p = new Point(lerp(left, right, Math.random()), lerp(bottom, top, Math.random()))
+
+      let keep = true
+      for (const poly of illegalPolys) {
+        if (poly.containsPoint(p)) {
+          keep = false
+          break
+        }
+      }
+      if (keep) {
+        trees.push(p)
+      }
+    }
+    return trees
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -78,6 +151,10 @@ class World {
 
     for (const border of this.roadBorders) {
       border.draw(ctx, { color: 'white', width: 4 })
+    }
+
+    for (const tree of this.trees) {
+      tree.draw(ctx, { color: 'rgba(0,200,0,0.8)', size: this.treeOptions.size })
     }
 
     for (const building of this.buildings) {

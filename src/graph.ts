@@ -97,6 +97,8 @@ class Graph {
     this.points.length = 0
     this.segments.length = 0
   }
+
+  hash = (): string => JSON.stringify(this)
 }
 
 export default Graph

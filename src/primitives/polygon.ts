@@ -123,6 +123,22 @@ class Polygon {
   }
 
   /**
+   * Checks if this polygon intersects with another polygon.
+   * @param poly The other polygon.
+   * @returns True if the polygons intersect, false otherwise.
+   */
+  intersectsPoly(poly: Polygon): boolean {
+    for (const seg1 of this.segments) {
+      for (const seg2 of poly.segments) {
+        if (getIntersection(seg1.p1, seg1.p2, seg2.p1, seg2.p2)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  /**
    * Draws the polygon on the canvas.
    * @param ctx The canvas rendering context.
    * @param options The drawing options.

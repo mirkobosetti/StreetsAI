@@ -26,3 +26,7 @@ export type RoadOptions = {
   width: number
   roundness: number
 }
+
+export type TreeOptions = {
+  size: number
+}
