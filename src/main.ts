@@ -1,4 +1,4 @@
-import Graph from './graph/graph'
+import Graph from './graph'
 import GraphEditor from './graphEditor'
 import './style.css'
 import Viewport from './viewport'

@@ -1,5 +1,5 @@
-import type Graph from './graph/graph'
-import { getNearestPoint } from './graph/utils'
+import type Graph from './graph'
+import { getNearestPoint } from './utils/utils'
 import Point from './primitives/point'
 import Segment from './primitives/segment'
 import type Viewport from './viewport'
@@ -29,7 +29,7 @@ class GraphEditor {
     this.graph.draw(this.ctx)
 
     if (this.hovered) {
-      this.hovered.draw(this.ctx, { fill: true })
+      this.hovered.draw(this.ctx)
     }
 
     if (this.selected) {

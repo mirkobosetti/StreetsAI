@@ -1,4 +1,4 @@
-import { add, scale, subtract } from './graph/utils'
+import { add, scale, subtract } from './utils/utils'
 import Point from './primitives/point'
 
 class Viewport {

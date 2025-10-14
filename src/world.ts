@@ -1,4 +1,4 @@
-import type Graph from './graph/graph'
+import type Graph from './graph'
 import Envelope from './primitives/envelope'
 import Polygon from './primitives/polygon'
 import type Segment from './primitives/segment'
