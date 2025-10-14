@@ -1,3 +1,4 @@
+import type { drawOptions } from '../types'
 import type Point from './point'
 
 class Segment {
@@ -9,18 +10,11 @@ class Segment {
     this.p2 = p2
   }
 
-  draw(
-    ctx: CanvasRenderingContext2D,
-    {
-      color = 'black',
-      lineWidth = 2,
-      dash = []
-    }: { color?: string; lineWidth?: number; dash?: [number, number] | [] } = {}
-  ) {
+  draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
     ctx.beginPath()
-    ctx.lineWidth = lineWidth
-    ctx.strokeStyle = color
-    ctx.setLineDash(dash)
+    ctx.lineWidth = options?.width ?? 2
+    ctx.strokeStyle = options?.color ?? 'black'
+    ctx.setLineDash(options?.dash ?? [])
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()

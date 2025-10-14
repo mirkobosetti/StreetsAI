@@ -1,3 +1,5 @@
+import type { drawOptions } from '../types'
+
 class Point {
   x: number
   y: number
@@ -7,23 +9,20 @@ class Point {
     this.y = y
   }
 
-  draw(
-    ctx: CanvasRenderingContext2D,
-    { size = 18, color = 'black', outline = false, fill = false } = {}
-  ) {
-    const radius = size / 2
+  draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
+    const radius = options?.size ? options.size / 2 : 9
     ctx.beginPath()
-    ctx.fillStyle = color
+    ctx.fillStyle = options?.color ?? 'black'
     ctx.arc(this.x, this.y, radius, 0, Math.PI * 2)
     ctx.fill()
-    if (outline) {
+    if (options?.outline) {
       ctx.beginPath()
       ctx.strokeStyle = 'yellow'
       ctx.lineWidth = 2
       ctx.arc(this.x, this.y, radius * 0.6, 0, Math.PI * 2)
       ctx.stroke()
     }
-    if (fill) {
+    if (options?.fill) {
       ctx.beginPath()
       ctx.arc(this.x, this.y, radius * 0.4, 0, Math.PI * 2)
       ctx.fillStyle = 'yellow'

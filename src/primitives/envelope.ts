@@ -1,4 +1,5 @@
 import { angle, subtract, translate } from '../graph/utils'
+import type { drawOptions } from '../types'
 import Polygon from './polygon'
 import type Segment from './segment'
 
@@ -11,8 +12,8 @@ class Envelope {
     this.poly = this.generatePolygon(width, roundness)
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
-    this.poly.draw(ctx, { stroke: 'red', fill: 'rgba(255,0,0,0.3)' })
+  draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
+    this.poly.draw(ctx, options)
   }
 
   private generatePolygon(width: number, roundness: number): Polygon {
