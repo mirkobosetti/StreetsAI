@@ -1,6 +1,7 @@
 import type Graph from './graph/graph'
 import { getNearestPoint } from './graph/utils'
 import Point from './primitives/point'
+import Segment from './primitives/segment'
 
 class GraphEditor {
   graph: Graph
@@ -38,16 +39,19 @@ class GraphEditor {
         if (this.hovered) {
           this.removePoint(this.hovered)
           this.hovered = null
+        } else {
+          this.selected = null
         }
       } else if (event.button == 0) {
         const mouse = new Point(event.offsetX, event.offsetY)
         if (this.hovered) {
-          this.selected = this.hovered
+          this.selectPoint(this.hovered)
           this.dragging = true
           return
         }
         this.graph.tryAddPoint(mouse)
-        this.selected = mouse
+
+        this.selectPoint(mouse)
         this.hovered = mouse
       }
     })
@@ -62,13 +66,21 @@ class GraphEditor {
       }
     })
 
-    this.canvas.addEventListener('mouseup', (event) => {
+    this.canvas.addEventListener('mouseup', () => {
       this.dragging = false
     })
 
     this.canvas.addEventListener('contextmenu', (event) => {
       event.preventDefault()
     })
+  }
+
+  private selectPoint(point: Point) {
+    if (this.selected) {
+      this.graph.tryAddSegment(new Segment(this.selected, point))
+    }
+
+    this.selected = point
   }
 
   private removePoint(point: Point) {
