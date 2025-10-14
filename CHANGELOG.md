@@ -7,6 +7,103 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-10-14
+
+### Added
+
+- **Procedural Building Generation**: Complete building placement and generation system
+  - Automatic building placement along road networks
+  - Configurable building width, minimum length, and spacing
+  - Smart building subdivision for optimal placement
+  - Collision detection to prevent overlapping buildings
+  - Intelligent spacing between adjacent structures
+- **Tree Generation System**: Natural tree placement algorithm
+  - Procedural tree distribution across the map
+  - Configurable tree size and density
+  - Smart placement avoiding roads and buildings
+  - Natural clustering near infrastructure
+  - Minimum distance constraints between trees
+- **Advanced Segment Operations**: Enhanced segment geometry utilities
+  - Point-to-segment distance calculation
+  - Point projection onto segments with offset calculation
+  - Direction vector computation for segments
+  - Segment length calculation
+- **Enhanced Polygon Capabilities**: Extended polygon geometric operations
+  - Polygon-to-polygon intersection detection
+  - Point-to-polygon distance calculation
+  - Polygon-to-polygon distance calculation
+  - Improved containment and collision algorithms
+- **Configuration System**: Comprehensive options for world elements
+  - `RoadOptions` type for road appearance parameters
+  - `BuildingOptions` type for building generation settings
+  - `TreeOptions` type for tree placement configuration
+  - Centralized configuration management in World constructor
+- **Advanced Math Utilities**: Extended mathematical operations
+  - Dot product calculation for vector operations
+  - Vector normalization for unit vectors
+  - Vector magnitude calculation
+  - Enhanced intersection detection with epsilon tolerance
+  - Improved numerical stability for floating-point operations
+
+### Enhanced
+
+- **World Generation Pipeline**: Sophisticated procedural generation
+  - Multi-stage building generation with guide segments
+  - Segment filtering based on minimum length requirements
+  - Building support subdivision for long road segments
+  - Intelligent building base generation with collision avoidance
+  - Optimized tree placement with multiple constraint checks
+- **Graph Hash System**: Efficient change detection
+  - Graph hashing for detecting modifications
+  - Conditional world regeneration based on graph changes
+  - Performance optimization by avoiding unnecessary regeneration
+  - Smart caching of generated world elements
+- **Rendering System**: Enhanced visual representation
+  - Color-coded buildings with transparency (red)
+  - Natural green trees with semi-transparent rendering
+  - Improved visual hierarchy with proper layering
+  - Enhanced drawing options for all world elements
+- **Geometric Algorithms**: Improved computational accuracy
+  - Epsilon tolerance for floating-point comparisons
+  - More robust intersection detection
+  - Better handling of edge cases in geometry operations
+  - Optimized polygon operations for performance
+
+### Changed
+
+- **Main Animation Loop**: Conditional world generation
+  - World regeneration only when graph changes
+  - Hash-based change detection for optimization
+  - Reduced computational overhead in animation cycle
+- **Building Documentation**: Comprehensive building generation guide
+  - Step-by-step procedural generation documentation
+  - Visual examples of each generation stage
+  - Detailed explanation of algorithms and techniques
+  - Added `BUILDINGS.md` in docs directory
+
+### Technical Improvements
+
+- **Performance Optimization**: Smart regeneration and caching
+  - Conditional world generation based on graph state
+  - Reduced redundant calculations in animation loop
+  - Efficient collision detection algorithms
+  - Optimized distance calculations for placement
+- **Procedural Algorithms**: Advanced generation techniques
+  - Multi-constraint satisfaction for tree placement
+  - Iterative building placement with collision avoidance
+  - Smart segment subdivision for optimal building distribution
+  - Natural randomization for realistic appearances
+- **Code Quality**: Enhanced type safety and organization
+  - Comprehensive type definitions for options
+  - Better separation of concerns in World class
+  - Improved method documentation and JSDoc comments
+  - More maintainable and extensible codebase
+- **Geometric Precision**: Improved numerical stability
+  - Epsilon tolerance for floating-point comparisons
+  - Better handling of degenerate cases
+  - More robust intersection algorithms
+  - Enhanced precision in distance calculations
+
 ## [0.4.0] - 2025-10-14
 
 ### Added
