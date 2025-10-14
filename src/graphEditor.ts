@@ -8,6 +8,7 @@ class GraphEditor {
   ctx: CanvasRenderingContext2D
   selected: Point | null = null
   hovered: Point | null = null
+  dragging: boolean = false
 
   constructor(graph: Graph, canvas: HTMLCanvasElement) {
     this.graph = graph
@@ -42,6 +43,7 @@ class GraphEditor {
         const mouse = new Point(event.offsetX, event.offsetY)
         if (this.hovered) {
           this.selected = this.hovered
+          this.dragging = true
           return
         }
         this.graph.tryAddPoint(mouse)
@@ -53,6 +55,15 @@ class GraphEditor {
     this.canvas.addEventListener('mousemove', (event) => {
       const mouse = new Point(event.offsetX, event.offsetY)
       this.hovered = getNearestPoint(mouse, this.graph.points, 10)
+
+      if (this.dragging && this.selected) {
+        this.selected.x = mouse.x
+        this.selected.y = mouse.y
+      }
+    })
+
+    this.canvas.addEventListener('mouseup', (event) => {
+      this.dragging = false
     })
 
     this.canvas.addEventListener('contextmenu', (event) => {
