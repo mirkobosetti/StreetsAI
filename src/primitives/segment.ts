@@ -9,7 +9,14 @@ class Segment {
     this.p2 = p2
   }
 
-  draw(ctx: CanvasRenderingContext2D, { color = 'black', lineWidth = 2, dash = [] } = {}) {
+  draw(
+    ctx: CanvasRenderingContext2D,
+    {
+      color = 'black',
+      lineWidth = 2,
+      dash = []
+    }: { color?: string; lineWidth?: number; dash?: [number, number] | [] } = {}
+  ) {
     ctx.beginPath()
     ctx.lineWidth = lineWidth
     ctx.strokeStyle = color

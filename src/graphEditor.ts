@@ -31,50 +31,54 @@ class GraphEditor {
 
     if (this.selected) {
       const intent = this.hovered ? this.hovered : this.mouse
-      new Segment(this.selected, intent).draw(this.ctx, { dash: [3, 3] }, 1)
+      new Segment(this.selected, intent).draw(this.ctx, { dash: [3, 3] })
       this.selected.draw(this.ctx, { outline: true })
     }
   }
 
   private addEventListeners() {
-    this.canvas.addEventListener('mousedown', (event) => {
-      if (event.button == 2) {
-        if (this.hovered) {
-          this.removePoint(this.hovered)
-          this.hovered = null
-        } else {
-          this.selected = null
-        }
-      } else if (event.button == 0) {
-        if (this.hovered) {
-          this.selectPoint(this.hovered)
-          this.dragging = true
-          return
-        }
-        this.graph.tryAddPoint(this.mouse)
+    this.canvas.addEventListener('mousedown', (event) => this.handleMouseDown(event))
+    this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event))
+    this.canvas.addEventListener('mouseup', () => this.handleMouseUp())
+    this.canvas.addEventListener('contextmenu', (event) => this.handleContextMenu(event))
+  }
 
-        this.selectPoint(this.mouse)
-        this.hovered = this.mouse
+  private handleMouseDown(event: MouseEvent) {
+    if (event.button == 2) {
+      if (this.selected) {
+        this.selected = null
+      } else if (this.hovered) {
+        this.removePoint(this.hovered)
       }
-    })
-
-    this.canvas.addEventListener('mousemove', (event) => {
-      this.mouse = new Point(event.offsetX, event.offsetY)
-      this.hovered = getNearestPoint(this.mouse, this.graph.points, 10)
-
-      if (this.dragging && this.selected) {
-        this.selected.x = this.mouse.x
-        this.selected.y = this.mouse.y
+    } else if (event.button == 0) {
+      if (this.hovered) {
+        this.selectPoint(this.hovered)
+        this.dragging = true
+        return
       }
-    })
+      this.graph.tryAddPoint(this.mouse)
 
-    this.canvas.addEventListener('mouseup', () => {
-      this.dragging = false
-    })
+      this.selectPoint(this.mouse)
+      this.hovered = this.mouse
+    }
+  }
 
-    this.canvas.addEventListener('contextmenu', (event) => {
-      event.preventDefault()
-    })
+  private handleMouseMove(event: MouseEvent) {
+    this.mouse = new Point(event.offsetX, event.offsetY)
+    this.hovered = getNearestPoint(this.mouse, this.graph.points, 10)
+
+    if (this.dragging && this.selected) {
+      this.selected.x = this.mouse.x
+      this.selected.y = this.mouse.y
+    }
+  }
+
+  private handleMouseUp() {
+    this.dragging = false
+  }
+
+  private handleContextMenu(event: MouseEvent) {
+    event.preventDefault()
   }
 
   private selectPoint(point: Point) {
