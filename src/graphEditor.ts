@@ -33,20 +33,41 @@ class GraphEditor {
 
   private addEventListeners() {
     this.canvas.addEventListener('mousedown', (event) => {
-      const mouse = new Point(event.offsetX, event.offsetY)
-      this.hovered = getNearestPoint(mouse, this.graph.points, 10)
-      if (this.hovered) {
-        this.selected = this.hovered
-        return
+      if (event.button == 2) {
+        if (this.hovered) {
+          this.removePoint(this.hovered)
+          this.hovered = null
+        }
+      } else if (event.button == 0) {
+        const mouse = new Point(event.offsetX, event.offsetY)
+        if (this.hovered) {
+          this.selected = this.hovered
+          return
+        }
+        this.graph.tryAddPoint(mouse)
+        this.selected = mouse
+        this.hovered = mouse
       }
-      this.graph.tryAddPoint(mouse)
-      this.selected = mouse
     })
 
     this.canvas.addEventListener('mousemove', (event) => {
       const mouse = new Point(event.offsetX, event.offsetY)
       this.hovered = getNearestPoint(mouse, this.graph.points, 10)
     })
+
+    this.canvas.addEventListener('contextmenu', (event) => {
+      event.preventDefault()
+    })
+  }
+
+  private removePoint(point: Point) {
+    this.graph.removePoint(point)
+    if (this.selected && this.selected.equals(point)) {
+      this.selected = null
+    }
+    if (this.hovered && this.hovered.equals(point)) {
+      this.hovered = null
+    }
   }
 }
 
