@@ -34,3 +34,11 @@ export function subtract(p1: Point, p2: Point): Point {
 export function scale(p: Point, factor: number): Point {
   return new Point(p.x * factor, p.y * factor)
 }
+
+export function translate(p: Point, angle: number, distance: number): Point {
+  return new Point(p.x + Math.cos(angle) * distance, p.y + Math.sin(angle) * distance)
+}
+
+export function angle(point: Point): number {
+  return Math.atan2(point.y, point.x)
+}
