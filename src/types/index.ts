@@ -31,3 +31,9 @@ export type RoadOptions = {
 export type TreeOptions = {
   size: number
 }
+
+export const MODES = {
+  GRAPH: 'graph',
+  STOP: 'stop'
+}
+export type Modes = (typeof MODES)[keyof typeof MODES]

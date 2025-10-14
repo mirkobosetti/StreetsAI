@@ -11,3 +11,20 @@ h1 {
 #myCanvas {
   background-color: #2a5;
 }
+
+button {
+  background-color: white;
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  text-shadow: 1px 1px black;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ddd;
+  scale: 0.95;
+  transition: all 0.2s;
+}

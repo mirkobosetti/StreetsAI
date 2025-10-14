@@ -14,6 +14,11 @@ class GraphEditor {
   dragging: boolean = false
   mouse: Point = new Point(0, 0)
 
+  private boundMouseDown!: (event: MouseEvent) => void
+  private boundMouseMove!: (event: MouseEvent) => void
+  private boundMouseUp!: (event: MouseEvent) => void
+  private boundContextMenu!: (event: MouseEvent) => void
+
   constructor(graph: Graph, viewport: Viewport) {
     this.graph = graph
     this.viewport = viewport
@@ -21,8 +26,6 @@ class GraphEditor {
     const context = this.canvas.getContext('2d')
     if (!context) throw new Error('Could not get canvas context')
     this.ctx = context
-
-    this.addEventListeners()
   }
 
   display() {
@@ -45,11 +48,32 @@ class GraphEditor {
     this.hovered = null
   }
 
+  enable() {
+    this.addEventListeners()
+  }
+
+  disable() {
+    this.removeEventListeners()
+    this.selected = null
+    this.hovered = null
+  }
+
   private addEventListeners() {
-    this.canvas.addEventListener('mousedown', (event) => this.handleMouseDown(event))
-    this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event))
-    this.canvas.addEventListener('mouseup', () => this.handleMouseUp())
-    this.canvas.addEventListener('contextmenu', (event) => this.handleContextMenu(event))
+    this.boundMouseDown = this.handleMouseDown.bind(this)
+    this.boundMouseMove = this.handleMouseMove.bind(this)
+    this.boundMouseUp = this.handleMouseUp.bind(this)
+    this.boundContextMenu = this.handleContextMenu.bind(this)
+    this.canvas.addEventListener('mousedown', this.boundMouseDown)
+    this.canvas.addEventListener('mousemove', this.boundMouseMove)
+    this.canvas.addEventListener('mouseup', this.boundMouseUp)
+    this.canvas.addEventListener('contextmenu', this.boundContextMenu)
+  }
+
+  private removeEventListeners() {
+    this.canvas.removeEventListener('mousedown', this.boundMouseDown)
+    this.canvas.removeEventListener('mousemove', this.boundMouseMove)
+    this.canvas.removeEventListener('mouseup', this.boundMouseUp)
+    this.canvas.removeEventListener('contextmenu', this.boundContextMenu)
   }
 
   private handleMouseDown(event: MouseEvent) {

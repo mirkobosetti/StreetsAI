@@ -14,7 +14,7 @@ class Segment {
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
     ctx.beginPath()
     ctx.lineWidth = options?.width ?? 2
-    ctx.strokeStyle = options?.color ?? 'transparent'
+    ctx.strokeStyle = options?.color ?? 'black'
     ctx.setLineDash(options?.dash ?? [])
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
