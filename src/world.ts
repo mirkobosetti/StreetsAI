@@ -23,7 +23,7 @@ class World {
   constructor(
     graph: Graph,
     roadOptions: RoadOptions = { width: 100, roundness: 10 },
-    buildingOptions: BuildingOptions = { width: 100, minLength: 150, spacing: 50 },
+    buildingOptions: BuildingOptions = { width: 150, minLength: 150, spacing: 50 },
     treeOptions: TreeOptions = { size: 160 }
   ) {
     this.graph = graph
@@ -189,12 +189,10 @@ class World {
       border.draw(ctx, { color: 'white', width: 4 })
     }
 
-    for (const tree of this.trees) {
-      tree.draw(ctx, viewPoint)
-    }
-
-    for (const building of this.buildings) {
-      building.draw(ctx, viewPoint)
+    const items = [...this.buildings, ...this.trees]
+    items.sort((a, b) => b.base.distanceToPoint(viewPoint) - a.base.distanceToPoint(viewPoint))
+    for (const i of items) {
+      i.draw(ctx, viewPoint)
     }
   }
 }

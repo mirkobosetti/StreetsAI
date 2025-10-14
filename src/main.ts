@@ -8,8 +8,8 @@ import World from './world'
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-canvas.width = 600
-canvas.height = 600
+canvas.width = 900
+canvas.height = 900
 
 const savedGraph = localStorage.getItem('graph')
 
