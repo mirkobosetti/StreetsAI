@@ -4,7 +4,7 @@ import Point from './primitives/point'
 import Polygon from './primitives/polygon'
 import Segment from './primitives/segment'
 import type { BuildingOptions, RoadOptions, TreeOptions } from './types'
-import { add, lerp, scale } from './utils/utils'
+import { add, distance, lerp, scale } from './utils/utils'
 
 class World {
   graph: Graph
@@ -97,10 +97,15 @@ class World {
       bases.push(new Envelope(seg, this.buildingOptions.width).poly)
     }
 
+    const eps = 0.001
+
     // looping between all bases to break them at intersections
     for (let i = 0; i < bases.length - 1; i++) {
       for (let j = i + 1; j < bases.length; j++) {
-        if (bases[i].intersectsPoly(bases[j])) {
+        if (
+          bases[i].intersectsPoly(bases[j]) ||
+          bases[i].distanceToPoly(bases[j]) < this.buildingOptions.spacing - eps
+        ) {
           bases.splice(j, 1)
           j--
         }
@@ -110,7 +115,7 @@ class World {
     return bases
   }
 
-  private generateTrees(count = 10) {
+  private generateTrees() {
     const points = [
       ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
       ...this.buildings.map((b) => b.points).flat()
@@ -123,19 +128,45 @@ class World {
     const illegalPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)]
 
     const trees: Polygon[] = []
-    while (trees.length < count) {
+    let tryCount = 0
+    while (tryCount < 100) {
       const p = new Point(lerp(left, right, Math.random()), lerp(bottom, top, Math.random()))
 
       let keep = true
       for (const poly of illegalPolys) {
-        if (poly.containsPoint(p)) {
+        if (poly.containsPoint(p) || poly.distanceToPoint(p) < this.treeOptions.size) {
           keep = false
           break
         }
       }
+
+      // check if tree too close to other trees
+      if (keep) {
+        for (const tree of trees) {
+          if (distance(tree, p) < this.treeOptions.size) {
+            keep = false
+            break
+          }
+        }
+      }
+
+      // avoiding trees in the middle of nowhere
+      if (keep) {
+        let closeToSomething = false
+        for (const poly of illegalPolys) {
+          if (poly.distanceToPoint(p) < this.treeOptions.size * 2) {
+            closeToSomething = true
+            break
+          }
+        }
+        keep = closeToSomething
+      }
+
       if (keep) {
         trees.push(p)
+        tryCount = 0
       }
+      tryCount++
     }
     return trees
   }

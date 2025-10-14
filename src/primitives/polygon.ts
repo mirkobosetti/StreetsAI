@@ -139,6 +139,24 @@ class Polygon {
   }
 
   /**
+   * Calculates the minimum distance from the polygon to a given point.
+   * @param point The point to measure the distance to.
+   * @returns The minimum distance from the polygon to the point.
+   */
+  distanceToPoint(point: Point): number {
+    return Math.min(...this.segments.map((s) => s.distanceToPoint(point)))
+  }
+
+  /**
+   * Calculates the minimum distance from the polygon to another polygon.
+   * @param poly The other polygon.
+   * @returns The minimum distance from this polygon to the other polygon.
+   */
+  distanceToPoly(poly: Polygon): number {
+    return Math.min(...poly.points.map((p) => this.distanceToPoint(p)))
+  }
+
+  /**
    * Draws the polygon on the canvas.
    * @param ctx The canvas rendering context.
    * @param options The drawing options.

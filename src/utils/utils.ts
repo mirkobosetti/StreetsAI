@@ -32,6 +32,10 @@ export function add(p1: Point, p2: Point): Point {
   return new Point(p1.x + p2.x, p1.y + p2.y)
 }
 
+export function dot(p1: Point, p2: Point): number {
+  return p1.x * p2.x + p1.y * p2.y
+}
+
 export function subtract(p1: Point, p2: Point): Point {
   return new Point(p1.x - p2.x, p1.y - p2.y)
 }

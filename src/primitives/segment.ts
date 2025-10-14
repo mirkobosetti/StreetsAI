@@ -1,5 +1,5 @@
 import type { drawOptions } from '../types'
-import { distance, normalize, subtract } from '../utils/utils'
+import { add, distance, dot, magnitude, normalize, scale, subtract } from '../utils/utils'
 import type Point from './point'
 
 class Segment {
@@ -20,6 +20,28 @@ class Segment {
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
     ctx.setLineDash([])
+  }
+
+  distanceToPoint(point: Point): number {
+    const proj = this.projectPoint(point)
+    if (proj.offset > 0 && proj.offset < 1) {
+      return distance(point, proj.point)
+    }
+    const distToP1 = distance(point, this.p1)
+    const distToP2 = distance(point, this.p2)
+    return Math.min(distToP1, distToP2)
+  }
+
+  projectPoint(point: Point): { point: Point; offset: number } {
+    const a = subtract(point, this.p1)
+    const b = subtract(this.p2, this.p1)
+    const normB = normalize(b)
+    const scaler = dot(a, normB)
+    const proj = {
+      point: add(this.p1, scale(normB, scaler)),
+      offset: scaler / magnitude(b)
+    }
+    return proj
   }
 
   /** Get the direction vector of the segment */
