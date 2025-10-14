@@ -1,5 +1,4 @@
 import { angle, subtract, translate } from '../graph/utils'
-import type Point from './point'
 import Polygon from './polygon'
 import type Segment from './segment'
 

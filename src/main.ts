@@ -1,8 +1,8 @@
 import Graph from './graph/graph'
 import GraphEditor from './graphEditor'
-import Envelope from './primitives/envelope'
 import './style.css'
 import Viewport from './viewport'
+import World from './world'
 
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -13,6 +13,7 @@ canvas.height = 600
 const savedGraph = localStorage.getItem('graph')
 
 const graph = savedGraph ? Graph.load(JSON.parse(savedGraph)) : new Graph([], [])
+const world = new World(graph)
 const viewport = new Viewport(canvas)
 const graphEditor = new GraphEditor(graph, viewport)
 
@@ -20,8 +21,9 @@ animate()
 
 function animate() {
   viewport.reset()
+  world.generate()
+  world.draw(ctx)
   graphEditor.display()
-  new Envelope(graph.segments[0], 80).draw(ctx)
   requestAnimationFrame(animate)
 }
 
