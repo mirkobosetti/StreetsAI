@@ -1,4 +1,5 @@
 import type { drawOptions } from '../types'
+import { distance } from '../utils/utils'
 import type Point from './point'
 
 class Segment {
@@ -20,6 +21,9 @@ class Segment {
     ctx.stroke()
     ctx.setLineDash([])
   }
+
+  /** Get the length of the segment */
+  length = () => distance(this.p1, this.p2)
 
   /** Check if two segments are equal (i.e., have the same endpoints) */
   equals = (segment: Segment) => this.includes(segment.p1) && this.includes(segment.p2)

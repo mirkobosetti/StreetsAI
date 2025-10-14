@@ -7,6 +7,10 @@ class Polygon {
   points: Point[]
   segments: Segment[]
 
+  /**
+   * Creates a polygon from the given points.
+   * @param points The points that define the polygon.
+   */
   constructor(points: Point[]) {
     this.points = points
     this.segments = []
@@ -16,32 +20,38 @@ class Polygon {
     }
   }
 
+  /**
+   * Computes the union of multiple polygons, returning the outer segments only.
+   * @param polys Array of polygons to compute the union of.
+   * @returns Array of outer segments.
+   */
   static union(polys: Polygon[]): Segment[] {
     Polygon.multiBreak(polys)
-    const keptSegs: Segment[] = []
-
+    const keptSegments = []
     for (let i = 0; i < polys.length; i++) {
       for (const seg of polys[i].segments) {
         let keep = true
-
         for (let j = 0; j < polys.length; j++) {
-          if (i !== j) {
+          if (i != j) {
             if (polys[j].containsSegment(seg)) {
               keep = false
               break
             }
           }
         }
-
         if (keep) {
-          keptSegs.push(seg)
+          keptSegments.push(seg)
         }
       }
     }
-
-    return keptSegs
+    return keptSegments
   }
 
+  /**
+   * Breaks two polygons at their intersections.
+   * @param poly1 The first polygon.
+   * @param poly2 The second polygon.
+   */
   static break(poly1: Polygon, poly2: Polygon) {
     const segs1 = poly1.segments
     const segs2 = poly2.segments
@@ -49,13 +59,12 @@ class Polygon {
     for (let i = 0; i < segs1.length; i++) {
       for (let j = 0; j < segs2.length; j++) {
         const int = getIntersection(segs1[i].p1, segs1[i].p2, segs2[j].p1, segs2[j].p2)
+
         if (int && int.offset != 1 && int.offset != 0) {
           const point = new Point(int.x, int.y)
-
           let aux = segs1[i].p2
           segs1[i].p2 = point
           segs1.splice(i + 1, 0, new Segment(point, aux))
-
           aux = segs2[j].p2
           segs2[j].p2 = point
           segs2.splice(j + 1, 0, new Segment(point, aux))
@@ -64,39 +73,60 @@ class Polygon {
     }
   }
 
-  static multiBreak(polygons: Polygon[]) {
-    for (let i = 0; i < polygons.length - 1; i++) {
-      for (let j = i + 1; j < polygons.length; j++) {
-        Polygon.break(polygons[i], polygons[j])
+  /**
+   * Breaks all polygons in the array at their intersections.
+   * @param polys Array of polygons to break.
+   */
+  static multiBreak(polys: Polygon[]) {
+    for (let i = 0; i < polys.length - 1; i++) {
+      for (let j = i + 1; j < polys.length; j++) {
+        Polygon.break(polys[i], polys[j])
       }
     }
   }
 
+  /**
+   * Checks if the polygon contains the given segment by testing its midpoint.
+   * @param seg The segment to check.
+   * @returns True if the polygon contains the segment, false otherwise.
+   */
   containsSegment(seg: Segment): boolean {
     const midpoint = average(seg.p1, seg.p2)
     return this.containsPoint(midpoint)
   }
 
-  containsPoint(p: Point): boolean {
-    const outerPoint = new Point(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER)
-    let intersections = 0
-
+  /**
+   * Checks if the polygon contains the given point.
+   * @param point The point to check.
+   * @returns True if the polygon contains the point, false otherwise.
+   */
+  containsPoint(point: Point): boolean {
+    const outerPoint = new Point(-1000, -1000) // maxsafeint
+    let intersectionCount = 0
     for (const seg of this.segments) {
-      const int = getIntersection(p, outerPoint, seg.p1, seg.p2)
+      const int = getIntersection(outerPoint, point, seg.p1, seg.p2)
       if (int) {
-        intersections++
+        intersectionCount++
       }
     }
-
-    return intersections % 2 == 1
+    return intersectionCount % 2 == 1
   }
 
+  /**
+   * Draws the segments of the polygon.
+   * @param ctx The canvas rendering context.
+   */
   drawSegments(ctx: CanvasRenderingContext2D) {
     for (const seg of this.segments) {
       seg.draw(ctx, { color: getRandomColor(), width: 5 })
     }
   }
 
+  /**
+   * Draws the polygon on the canvas.
+   * @param ctx The canvas rendering context.
+   * @param options The drawing options.
+   */
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
     if (!ctx) return
 

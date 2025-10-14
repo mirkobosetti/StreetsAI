@@ -15,3 +15,14 @@ export type drawOptions = {
   outline?: boolean
   fillCircle?: boolean
 }
+
+export type BuildingOptions = {
+  width: number
+  minLength: number
+  spacing: number
+}
+
+export type RoadOptions = {
+  width: number
+  roundness: number
+}
