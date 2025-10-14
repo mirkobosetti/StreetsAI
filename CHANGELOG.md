@@ -7,6 +7,94 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-10-14
+
+### Added
+
+- **3D Building Rendering**: Pseudo-3D building visualization system
+  - Building class with configurable height parameter
+  - Dynamic ceiling generation based on viewpoint
+  - Side wall generation with proper polygon construction
+  - Depth-based sorting for realistic occlusion
+  - Perspective effect based on viewer position
+- **3D Tree Rendering**: Multi-level tree visualization
+  - Tree class with procedural canopy generation
+  - 7-level rendering for smooth gradation
+  - Height coefficient for perspective depth
+  - Noise-based radius variation for natural appearance
+  - Color gradient from dark green at base to light green at top
+  - Viewpoint-aware rendering for proper depth
+- **Enhanced Interpolation Utilities**: Extended interpolation functions
+  - 2D linear interpolation (`lerp2D`) for smooth point transitions
+  - Combined with existing 1D lerp for complete interpolation toolkit
+- **Items Architecture**: New organizational structure
+  - Dedicated `items/` directory for world objects
+  - Building class in `items/building.ts`
+  - Tree class in `items/tree.ts`
+  - Clear separation between primitives and world items
+- **ViewPoint System**: Dynamic perspective rendering
+  - ViewPoint calculation from viewport offset
+  - Real-time viewpoint updates based on camera position
+  - Perspective-based object rendering for 3D effect
+  - Integration with world drawing system
+
+### Enhanced
+
+- **World Rendering Pipeline**: Sophisticated 3D visualization
+  - Depth-sorted rendering of buildings and trees
+  - Combined items array for unified depth sorting
+  - Proper z-order management for realistic overlapping
+  - ViewPoint-aware drawing for all 3D objects
+- **Building Generation**: Improved building system
+  - Buildings now instances of Building class instead of raw polygons
+  - Configurable building heights through constructor
+  - Enhanced collision detection with proper base handling
+  - White fill for buildings for better contrast
+- **Tree Generation**: Advanced tree placement and rendering
+  - Trees now instances of Tree class with full 3D rendering
+  - Base polygon for proper collision detection
+  - Procedural level generation with noise for variety
+  - Natural color gradients for realistic appearance
+- **Canvas Size**: Increased canvas dimensions
+  - Canvas size updated from 600x600 to 900x900
+  - Better viewport for larger city visualizations
+  - More room for procedural generation
+  - Improved visual experience
+
+### Changed
+
+- **World Draw Method**: Updated signature with viewPoint parameter
+  - Now accepts viewPoint for perspective calculations
+  - All 3D objects rendered with proper perspective
+  - Consistent depth sorting across all world items
+- **Main Animation Loop**: ViewPoint integration
+  - ViewPoint calculated from viewport offset
+  - Passed to world draw method for 3D rendering
+  - Smooth camera-relative perspective updates
+
+### Technical Improvements
+
+- **3D Rendering Algorithm**: Pseudo-3D perspective system
+  - Efficient depth calculation using distance to viewpoint
+  - Dynamic polygon generation for building sides and ceilings
+  - Painter's algorithm for proper occlusion
+  - Optimized sorting for real-time performance
+- **Procedural Generation**: Enhanced natural variation
+  - Noise-based tree shape generation for organic appearance
+  - Deterministic randomization based on position
+  - Smooth level transitions in tree rendering
+  - Natural color gradients and size variations
+- **Performance Optimization**: Smart rendering order
+  - Single depth sort for all items (buildings + trees)
+  - Efficient distance calculations
+  - Reduced overdraw through proper sorting
+  - Optimized polygon generation
+- **Code Organization**: Improved project structure
+  - Clear separation of world items from primitives
+  - Building and Tree classes in dedicated directory
+  - Better maintainability and extensibility
+  - Cleaner import structure
+
 ## [0.5.0] - 2025-10-14
 
 ### Added
