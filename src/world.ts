@@ -1,4 +1,5 @@
 import type Graph from './graph'
+import Tree from './items/tree'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
 import Polygon from './primitives/polygon'
@@ -12,7 +13,7 @@ class World {
   envelopes: Envelope[]
   roadBorders: Segment[]
   buildings: Polygon[]
-  trees: Polygon[]
+  trees: Tree[]
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions
@@ -127,7 +128,7 @@ class World {
 
     const illegalPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)]
 
-    const trees: Polygon[] = []
+    const trees: Tree[] = []
     let tryCount = 0
     while (tryCount < 100) {
       const p = new Point(lerp(left, right, Math.random()), lerp(bottom, top, Math.random()))
@@ -143,7 +144,7 @@ class World {
       // check if tree too close to other trees
       if (keep) {
         for (const tree of trees) {
-          if (distance(tree, p) < this.treeOptions.size) {
+          if (distance(tree.center, p) < this.treeOptions.size) {
             keep = false
             break
           }
@@ -163,7 +164,7 @@ class World {
       }
 
       if (keep) {
-        trees.push(p)
+        trees.push(new Tree(p, this.treeOptions.size))
         tryCount = 0
       }
       tryCount++
@@ -171,7 +172,7 @@ class World {
     return trees
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
     for (const env of this.envelopes) {
       env.draw(ctx, { fill: '#bbb', stroke: '#bbb', width: 1, lineWidth: 15 })
     }
@@ -185,7 +186,7 @@ class World {
     }
 
     for (const tree of this.trees) {
-      tree.draw(ctx, { color: 'rgba(0,200,0,0.8)', size: this.treeOptions.size })
+      tree.draw(ctx, viewPoint)
     }
 
     for (const building of this.buildings) {
