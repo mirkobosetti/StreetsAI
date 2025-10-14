@@ -2,9 +2,11 @@ import type Graph from './graph/graph'
 import { getNearestPoint } from './graph/utils'
 import Point from './primitives/point'
 import Segment from './primitives/segment'
+import type Viewport from './viewport'
 
 class GraphEditor {
   graph: Graph
+  viewport: Viewport
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
   selected: Point | null = null
@@ -12,10 +14,11 @@ class GraphEditor {
   dragging: boolean = false
   mouse: Point = new Point(0, 0)
 
-  constructor(graph: Graph, canvas: HTMLCanvasElement) {
+  constructor(graph: Graph, viewport: Viewport) {
     this.graph = graph
-    this.canvas = canvas
-    const context = canvas.getContext('2d')
+    this.viewport = viewport
+    this.canvas = viewport.canvas
+    const context = this.canvas.getContext('2d')
     if (!context) throw new Error('Could not get canvas context')
     this.ctx = context
 
@@ -64,8 +67,8 @@ class GraphEditor {
   }
 
   private handleMouseMove(event: MouseEvent) {
-    this.mouse = new Point(event.offsetX, event.offsetY)
-    this.hovered = getNearestPoint(this.mouse, this.graph.points, 10)
+    this.mouse = this.viewport.getMouse(event)
+    this.hovered = getNearestPoint(this.mouse, this.graph.points, 10 * this.viewport.zoom)
 
     if (this.dragging && this.selected) {
       this.selected.x = this.mouse.x
