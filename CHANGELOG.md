@@ -7,6 +7,87 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-14
+
+### Added
+
+- **World System**: Complete road generation and visualization framework
+  - World class for managing road networks and visual representation
+  - Configurable road width and roundness parameters
+  - Real-time road generation from graph segments
+  - Advanced road border calculation with polygon union operations
+- **Polygon Geometry**: Comprehensive polygon system for road shapes
+  - Polygon class with points and segments management
+  - Advanced polygon intersection and union algorithms
+  - Point containment detection using ray casting
+  - Polygon breaking and multi-polygon operations
+  - Segment containment validation for complex shapes
+- **Envelope System**: Road envelope generation for realistic width
+  - Envelope class wrapping segments in polygonal boundaries
+  - Configurable width and roundness for smooth road appearance
+  - Geometric angle calculation for proper road orientation
+  - Multi-point polygon generation for rounded road edges
+- **Advanced Mathematical Utils**: Extended geometric calculation library
+  - Line intersection detection with offset calculation
+  - Point translation with angle and distance
+  - Angle calculation from point vectors
+  - Average point calculation for midpoint operations
+  - Linear interpolation (`lerp`) for smooth transitions
+  - Random color generation for visual variety
+- **TypeScript Type System**: Comprehensive type definitions
+  - `Intersection` type for geometric intersection data
+  - `drawOptions` interface for standardized drawing parameters
+  - Enhanced type safety across all drawing operations
+  - Centralized type definitions in dedicated module
+
+### Enhanced
+
+- **Drawing System**: Unified drawing interface across all primitives
+  - Standardized `drawOptions` interface for all drawing methods
+  - Consistent color, width, dash, and styling options
+  - Enhanced Point drawing with configurable outline and fill options
+  - Improved Segment drawing with transparent default colors
+  - Advanced polygon rendering with fill and stroke capabilities
+- **Project Structure**: Reorganized codebase architecture
+  - Moved utilities from `graph/utils.ts` to `utils/utils.ts`
+  - Centralized type definitions in `types/` directory
+  - Graph moved from `graph/graph.ts` to root `graph.ts`
+  - Enhanced documentation with road rendering concepts
+  - Updated TypeScript configuration for new structure
+- **Visual Rendering**: Sophisticated road visualization
+  - Multi-layered rendering with roads, borders, and graph overlay
+  - Transparent graph editor overlay (20% opacity) for editing
+  - Realistic road appearance with proper borders and intersections
+  - Dashed center lines for road lane indicators
+  - Color-coded visual elements for different road components
+
+### Changed
+
+- **Main Application**: Integrated world system with graph editor
+  - World generation in animation loop for real-time updates
+  - Layered rendering pipeline with world and editor separation
+  - Updated import paths for reorganized module structure
+- **File Organization**: Improved project structure
+  - Documentation moved to `docs/` directory with specialized sections
+  - Utils consolidated in dedicated directory structure
+  - Types centralized for better maintainability
+
+### Technical Improvements
+
+- **Geometric Algorithms**: Advanced computational geometry
+  - Efficient polygon union operations for road networks
+  - Robust intersection detection with floating-point precision
+  - Optimized polygon breaking for complex road intersections
+  - Performance-aware segment containment checking
+- **Rendering Pipeline**: Optimized drawing performance
+  - Context state management for consistent rendering
+  - Efficient path construction for complex polygons
+  - Smart redraw cycles with minimal canvas operations
+- **Code Architecture**: Enhanced modularity and type safety
+  - Clear separation between geometric primitives and world logic
+  - Standardized interfaces for consistent API design
+  - Improved error handling and type checking
+
 ## [0.3.0] - 2025-10-14
 
 ### Added
