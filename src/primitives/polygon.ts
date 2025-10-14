@@ -169,7 +169,7 @@ class Polygon {
     ctx.fillStyle = options?.fill ?? 'rgba(0,0,255,0.3)'
     ctx.strokeStyle = options?.stroke ?? 'blue'
     ctx.lineWidth = options?.lineWidth ?? 2
-
+    ctx.lineJoin = options?.join ?? 'miter'
     ctx.moveTo(this.points[0].x, this.points[0].y)
     for (let i = 1; i < this.points.length; i++) {
       ctx.lineTo(this.points[i].x, this.points[i].y)

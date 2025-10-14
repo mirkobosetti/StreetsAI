@@ -94,3 +94,10 @@ export function normalize(p: Point): Point {
 export function magnitude(p: Point): number {
   return Math.hypot(p.x, p.y)
 }
+
+export function getFake3dPoint(point: Point, viewPoint: Point, height: number): Point {
+  const dir = normalize(subtract(point, viewPoint))
+  const dist = distance(point, viewPoint)
+  const scaler = Math.atan(dist / 900) / (Math.PI / 2)
+  return add(point, scale(dir, height * scaler))
+}

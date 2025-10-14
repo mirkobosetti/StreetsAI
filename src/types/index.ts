@@ -14,6 +14,7 @@ export type drawOptions = {
   size?: number
   outline?: boolean
   fillCircle?: boolean
+  join?: CanvasLineJoin
 }
 
 export type BuildingOptions = {
