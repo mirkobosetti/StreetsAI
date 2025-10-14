@@ -7,6 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-10-14
+
+### Added
+
+- **Viewport System**: Advanced viewport management for canvas navigation
+  - Zoom functionality with mouse wheel (1x to 5x zoom range)
+  - Pan functionality with middle mouse button drag
+  - Coordinate transformation for proper interaction scaling
+  - Canvas reset and transformation management
+- **Graph Persistence**: Save and load functionality for graph data
+  - Graph serialization to JSON format
+  - LocalStorage integration for data persistence
+  - Static `Graph.load()` method for deserialization
+  - Automatic graph restoration on page load
+- **Enhanced Graph Utilities**: Extended mathematical operations
+  - Vector addition (`add`)
+  - Vector subtraction (`subtract`)
+  - Vector scaling (`scale`)
+  - Improved geometric calculations for viewport transformations
+- **UI Controls**: New control interface
+  - Save button (💾) for persisting graph data
+  - Dispose button (🗑️) for clearing the graph
+  - Minimalist icon-based interface design
+
+### Enhanced
+
+- **GraphEditor Integration**: Viewport-aware interaction system
+  - Mouse position calculation relative to viewport transformations
+  - Zoom-aware hover detection with scaled thresholds
+  - Proper coordinate handling for panning and zooming
+  - Updated mouse event handling for viewport compatibility
+- **Canvas Management**: Improved rendering pipeline
+  - Viewport-controlled canvas transformations
+  - Proper context save/restore cycle
+  - Optimized coordinate system handling
+- **Graph Loading**: Robust deserialization system
+  - Point reconstruction from coordinate data
+  - Segment reconstruction with point reference matching
+  - Error-safe loading with fallback to empty graph
+
+### Changed
+
+- **Main Application**: Simplified initialization with viewport integration
+- **GraphEditor Constructor**: Now requires viewport parameter
+- **Mouse Event Handling**: Updated to work with viewport transformations
+- **Drawing Pipeline**: Integrated with viewport transformation system
+
+### Technical Improvements
+
+- **Performance**: Efficient viewport transformation calculations
+- **User Experience**: Smooth zoom and pan interactions
+- **Data Persistence**: Reliable save/load functionality
+- **Code Architecture**: Clean separation between viewport and editor logic
+- **Coordinate Systems**: Proper handling of world vs screen coordinates
+
 ## [0.2.0] - 2025-10-14
 
 ### Added
