@@ -1,5 +1,5 @@
-import type Point from '../primitives/point'
-import type Segment from '../primitives/segment'
+import Point from '../primitives/point'
+import Segment from '../primitives/segment'
 
 class Graph {
   points: Point[]
@@ -8,6 +8,22 @@ class Graph {
   constructor(points: Point[], segments: Segment[]) {
     this.points = points
     this.segments = segments
+  }
+
+  static load(info: {
+    points: { x: number; y: number }[]
+    segments: { p1: { x: number; y: number }; p2: { x: number; y: number } }[]
+  }) {
+    const points = info.points.map((p) => new Point(p.x, p.y))
+    const segments = info.segments.map(
+      (s) =>
+        new Segment(
+          points.find((p) => p.equals(s.p1 as Point)) as Point,
+          points.find((p) => p.equals(s.p2 as Point)) as Point
+        )
+    )
+
+    return new Graph(points, segments)
   }
 
   draw(ctx: CanvasRenderingContext2D) {

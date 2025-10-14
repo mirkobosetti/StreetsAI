@@ -39,6 +39,12 @@ class GraphEditor {
     }
   }
 
+  dispose() {
+    this.graph.dispose()
+    this.selected = null
+    this.hovered = null
+  }
+
   private addEventListeners() {
     this.canvas.addEventListener('mousedown', (event) => this.handleMouseDown(event))
     this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event))
