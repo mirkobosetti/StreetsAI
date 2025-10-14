@@ -1,4 +1,5 @@
 import type Graph from './graph'
+import Building from './items/building'
 import Tree from './items/tree'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
@@ -12,7 +13,7 @@ class World {
 
   envelopes: Envelope[]
   roadBorders: Segment[]
-  buildings: Polygon[]
+  buildings: Building[]
   trees: Tree[]
 
   roadOptions: RoadOptions
@@ -113,20 +114,23 @@ class World {
       }
     }
 
-    return bases
+    return bases.map((b) => new Building(b))
   }
 
   private generateTrees() {
     const points = [
       ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
-      ...this.buildings.map((b) => b.points).flat()
+      ...this.buildings.map((b) => b.base.points).flat()
     ]
     const left = Math.min(...points.map((p) => p.x))
     const right = Math.max(...points.map((p) => p.x))
     const top = Math.min(...points.map((p) => p.y))
     const bottom = Math.max(...points.map((p) => p.y))
 
-    const illegalPolys = [...this.buildings, ...this.envelopes.map((e) => e.poly)]
+    const illegalPolys = [
+      ...this.buildings.map((b) => b.base),
+      ...this.envelopes.map((e) => e.poly)
+    ]
 
     const trees: Tree[] = []
     let tryCount = 0
@@ -190,7 +194,7 @@ class World {
     }
 
     for (const building of this.buildings) {
-      building.draw(ctx, { color: 'rgba(200,0,0,0.8)', width: 4 })
+      building.draw(ctx, viewPoint)
     }
   }
 }

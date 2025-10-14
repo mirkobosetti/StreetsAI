@@ -1,6 +1,5 @@
 import Point from '../primitives/point'
 import Polygon from '../primitives/polygon'
-import Segment from '../primitives/segment'
 import { add, lerp, lerp2D, scale, subtract, translate } from '../utils/utils'
 
 class Tree {
