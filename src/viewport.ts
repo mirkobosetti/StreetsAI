@@ -42,6 +42,16 @@ class Viewport {
     return add(this.offset, this.drag.offset)
   }
 
+  reset() {
+    this.ctx.restore()
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.save()
+    this.ctx.translate(this.center.x, this.center.y)
+    this.ctx.scale(1 / this.zoom, 1 / this.zoom)
+    const offset = this.getOffset()
+    this.ctx.translate(offset.x, offset.y)
+  }
+
   private addEventListeners() {
     this.canvas.addEventListener('wheel', (event) => this.handleWheel(event))
     this.canvas.addEventListener('mousedown', (event) => this.handleMouseDown(event))
