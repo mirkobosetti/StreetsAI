@@ -9,14 +9,15 @@ class Segment {
     this.p2 = p2
   }
 
-  draw(ctx: CanvasRenderingContext2D, color = 'black', lineWidth = 2) {
+  draw(ctx: CanvasRenderingContext2D, { color = 'black', lineWidth = 2, dash = [] } = {}) {
     ctx.beginPath()
     ctx.lineWidth = lineWidth
     ctx.strokeStyle = color
+    ctx.setLineDash(dash)
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()
-    // ctx.closePath()
+    ctx.setLineDash([])
   }
 
   /** Check if two segments are equal (i.e., have the same endpoints) */
