@@ -10,7 +10,7 @@ class World {
   envelopes: Envelope[]
   roadBorders: Segment[]
 
-  constructor(graph: Graph, roadWidth = 80, roadRoundness = 3) {
+  constructor(graph: Graph, roadWidth = 100, roadRoundness = 10) {
     this.graph = graph
     this.roadWidth = roadWidth
     this.roadRoundness = roadRoundness
@@ -31,7 +31,11 @@ class World {
 
   draw(ctx: CanvasRenderingContext2D) {
     for (const env of this.envelopes) {
-      env.draw(ctx)
+      env.draw(ctx, { fill: '#bbb', stroke: '#bbb', width: 1, lineWidth: 15 })
+    }
+
+    for (const segment of this.graph.segments) {
+      segment.draw(ctx, { color: 'white', width: 4, dash: [10, 10] })
     }
 
     for (const border of this.roadBorders) {
