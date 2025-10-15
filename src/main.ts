@@ -18,6 +18,7 @@ btnSave.addEventListener('click', () => {
 
 btnDispose.addEventListener('click', () => {
   graphEditor.dispose()
+  world.markings.length = 0
 })
 
 btnGraph.addEventListener('click', () => {
