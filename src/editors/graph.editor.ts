@@ -3,8 +3,9 @@ import { getNearestPoint } from '../utils'
 import Point from '../primitives/point'
 import Segment from '../primitives/segment'
 import type Viewport from '../viewport'
+import type { Editor } from '../types'
 
-class GraphEditor {
+class GraphEditor implements Editor {
   graph: Graph
   viewport: Viewport
   canvas: HTMLCanvasElement

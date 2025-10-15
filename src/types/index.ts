@@ -1,3 +1,7 @@
+import type CrossingEditor from '../editors/crossing.marking.editor'
+import type GraphEditor from '../editors/graph.editor'
+import type StopEditor from '../editors/stop.marking.editor'
+
 export type Intersection = {
   x: number
   y: number
@@ -46,3 +50,21 @@ export const MOUSE = {
   RIGHT: 2
 }
 export type MouseButtons = (typeof MOUSE)[keyof typeof MOUSE]
+
+export interface Editor {
+  enable(): void
+  disable(): void
+  display(): void
+}
+
+export interface Tool<T extends Editor> {
+  button: HTMLButtonElement
+  editor: T
+}
+
+export interface Tools {
+  graph: Tool<GraphEditor>
+  stop: Tool<StopEditor>
+  crossing: Tool<CrossingEditor>
+  [key: string]: Tool<Editor>
+}

@@ -1,12 +1,12 @@
 import type Marking from '../markings/base.marking'
 import Point from '../primitives/point'
 import type Segment from '../primitives/segment'
-import { MOUSE } from '../types'
+import { MOUSE, type Editor } from '../types'
 import { getNearestSegment } from '../utils'
 import type Viewport from '../viewport'
 import type World from '../world'
 
-class MarkingEditor {
+class MarkingEditor implements Editor {
   world: World
   viewport: Viewport
   enabled: boolean = false
@@ -32,7 +32,7 @@ class MarkingEditor {
     this.markings = world.markings
   }
 
-  createMarking(center: Point, directionVector: Point): any {
+  createMarking(center: Point, _directionVector: Point): any {
     return center
   }
 

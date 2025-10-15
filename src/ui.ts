@@ -1,8 +1,9 @@
-import type CrossingEditor from './editors/crossing.marking.editor'
-import type GraphEditor from './editors/graph.editor'
-import type StopEditor from './editors/stop.marking.editor'
+import CrossingEditor from './editors/crossing.marking.editor'
+import GraphEditor from './editors/graph.editor'
+import StopEditor from './editors/stop.marking.editor'
 import type Graph from './graph'
-import { MODES, type Modes } from './types'
+import { MODES, type Modes, type Tools } from './types'
+import type Viewport from './viewport'
 import type World from './world'
 
 class UI {
@@ -13,18 +14,11 @@ class UI {
   private btnCrossing: HTMLButtonElement
 
   graph: Graph
-  graphEditor: GraphEditor
   world: World
-  stopEditor: StopEditor
-  crossingEditor: CrossingEditor
 
-  constructor(
-    graph: Graph,
-    graphEditor: GraphEditor,
-    world: World,
-    stopEditor: StopEditor,
-    crossingEditor: CrossingEditor
-  ) {
+  tools: Tools
+
+  constructor(graph: Graph, world: World, viewport: Viewport) {
     this.btnSave = document.getElementById('btnSave') as HTMLButtonElement
     this.btnDispose = document.getElementById('btnDispose') as HTMLButtonElement
     this.btnGraph = document.getElementById('btnGraph') as HTMLButtonElement
@@ -32,56 +26,41 @@ class UI {
     this.btnCrossing = document.getElementById('btnCrossing') as HTMLButtonElement
 
     this.graph = graph
-    this.graphEditor = graphEditor
     this.world = world
-    this.stopEditor = stopEditor
-    this.crossingEditor = crossingEditor
 
     this.btnSave.addEventListener('click', () => {
       localStorage.setItem('graph', JSON.stringify(graph))
     })
 
     this.btnDispose.addEventListener('click', () => {
-      graphEditor.dispose()
-      world.markings.length = 0
+      this.tools.graph.editor.dispose()
+      this.world.markings.length = 0
     })
 
     this.btnGraph.addEventListener('click', () => this.setMode(MODES.GRAPH))
     this.btnStop.addEventListener('click', () => this.setMode(MODES.STOP))
     this.btnCrossing.addEventListener('click', () => this.setMode(MODES.CROSSING))
+
+    this.tools = {
+      graph: { button: this.btnGraph, editor: new GraphEditor(graph, viewport) },
+      stop: { button: this.btnStop, editor: new StopEditor(world, viewport) },
+      crossing: { button: this.btnCrossing, editor: new CrossingEditor(world, viewport) }
+    }
   }
 
   setMode(mode: Modes) {
     this.disableEditors()
-    switch (mode) {
-      case MODES.GRAPH:
-        this.btnGraph.style.backgroundColor = 'lightgreen'
-        this.btnGraph.style.filter = 'none'
-        this.graphEditor.enable()
-        break
-      case MODES.STOP:
-        this.btnStop.style.backgroundColor = 'lightgreen'
-        this.btnStop.style.filter = 'none'
-        this.stopEditor.enable()
-        break
-      case MODES.CROSSING:
-        this.btnCrossing.style.backgroundColor = 'lightgreen'
-        this.btnCrossing.style.filter = 'none'
-        this.crossingEditor.enable()
-        break
-    }
+    this.tools[mode].button.style.backgroundColor = 'lightgreen'
+    this.tools[mode].button.style.filter = 'none'
+    this.tools[mode].editor.enable()
   }
 
   disableEditors() {
-    this.btnGraph.style.backgroundColor = 'gray'
-    this.btnGraph.style.filter = 'grayscale(100%)'
-    this.graphEditor.disable()
-    this.btnStop.style.backgroundColor = 'gray'
-    this.btnStop.style.filter = 'grayscale(100%)'
-    this.stopEditor.disable()
-    this.btnCrossing.style.backgroundColor = 'gray'
-    this.btnCrossing.style.filter = 'grayscale(100%)'
-    this.crossingEditor.disable()
+    Object.values(this.tools).forEach((tool) => {
+      tool.editor.disable()
+      tool.button.style.backgroundColor = 'gray'
+      tool.button.style.filter = 'grayscale(100%)'
+    })
   }
 }
 
