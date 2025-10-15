@@ -2,23 +2,17 @@ import Point from '../primitives/point'
 import type Segment from '../primitives/segment'
 import type { Intersection } from '../types'
 
-export function getNearestPoint(
-  mouse: Point,
-  points: Point[],
-  threshold = Number.MAX_SAFE_INTEGER
-): Point | null {
-  let nearestPoint: Point | null = null
-  let minDistance = threshold
-
+export function getNearestPoint(loc: Point, points: Point[], threshold = Number.MAX_SAFE_INTEGER) {
+  let minDist = Number.MAX_SAFE_INTEGER
+  let nearest = null
   for (const point of points) {
-    const dist = distance(point, mouse)
-    if (dist < minDistance) {
-      minDistance = dist
-      nearestPoint = point
+    const dist = distance(point, loc)
+    if (dist < minDist && dist < threshold) {
+      minDist = dist
+      nearest = point
     }
   }
-
-  return nearestPoint
+  return nearest
 }
 
 export function getNearestSegment(

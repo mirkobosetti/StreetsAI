@@ -2,13 +2,14 @@ import type Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
 import type Crossing from './markings/crossing.marking'
+import Light from './markings/light.marking'
 import type Stop from './markings/stop.marking'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
 import Polygon from './primitives/polygon'
 import Segment from './primitives/segment'
 import type { BuildingOptions, RoadOptions, TreeOptions } from './types'
-import { add, distance, lerp, scale } from './utils'
+import { add, distance, getNearestPoint, lerp, scale } from './utils'
 
 class World {
   graph: Graph
@@ -24,6 +25,8 @@ class World {
   buildingOptions: BuildingOptions
   treeOptions: TreeOptions
 
+  frameCount: number = 0
+
   constructor(
     graph: Graph,
     roadOptions: RoadOptions = { width: 100, roundness: 10 },
@@ -38,6 +41,7 @@ class World {
     this.generate()
   }
 
+  /** Generate the world elements (buildings, trees, road borders, lane guides) */
   generate() {
     this.envelopes.length = 0
 
@@ -52,7 +56,11 @@ class World {
     this.laneGuides = this.generateLaneGuides()
   }
 
-  private generateBuildings() {
+  /**
+   * Generate building bases along the roads
+   * @returns Array of generated building bases
+   */
+  private generateBuildings(): Building[] {
     const tmpEnvelopes: Envelope[] = []
     for (const seg of this.graph.segments) {
       tmpEnvelopes.push(
@@ -117,7 +125,11 @@ class World {
     return bases.map((b) => new Building(b))
   }
 
-  private generateTrees() {
+  /**
+   * Generate trees in the world avoiding buildings and roads
+   * @returns Array of generated trees
+   */
+  private generateTrees(): Tree[] {
     const points = [
       ...this.roadBorders.map((s) => [s.p1, s.p2]).flat(),
       ...this.buildings.map((b) => b.base.points).flat()
@@ -176,6 +188,10 @@ class World {
     return trees
   }
 
+  /**
+   * Generate lane guides for the roads
+   * @returns Array of lane guide segments
+   */
   private generateLaneGuides(): Segment[] {
     const tmpEnvelopes: Envelope[] = []
     for (const seg of this.graph.segments) {
@@ -186,7 +202,72 @@ class World {
     return segments
   }
 
+  /**
+   * Get intersection points in the graph where more than two segments meet
+   * @returns Array of intersection points
+   */
+  private getIntersections(): Point[] {
+    const subset = []
+    for (const point of this.graph.points) {
+      let degree = 0
+      for (const seg of this.graph.segments) {
+        if (seg.includes(point)) {
+          degree++
+        }
+      }
+
+      if (degree > 2) {
+        subset.push(point)
+      }
+    }
+    return subset
+  }
+
+  private updateLights() {
+    //TODO: re-implement traffic light logic
+    // const lights = this.markings.filter((m) => m instanceof Light)
+
+    // console.log(this.getIntersections())
+
+    // const controlCenters = []
+    // for (const light of lights) {
+    //   const point = getNearestPoint(light.center, this.getIntersections())
+    //   let controlCenter = controlCenters.find((c) => c.equals(point))
+    //   if (!controlCenter) {
+    //     controlCenter = new Point(point.x, point.y)
+    //     controlCenter.lights = [light]
+    //     controlCenters.push(controlCenter)
+    //   } else {
+    //     controlCenter.lights.push(light)
+    //   }
+    // }
+
+    // const greenDuration = 2
+    // const yellowDuration = 1
+
+    // for (const center of controlCenters) {
+    //   center.ticks = center.lights.length * (greenDuration + yellowDuration)
+    // }
+    // const tick = Math.floor(this.frameCount / 60)
+    // for (const center of controlCenters) {
+    //   const cTick = tick % center.ticks
+    //   const greenYellowIndex = Math.floor(cTick / (greenDuration + yellowDuration))
+    //   const greenYellowState =
+    //     cTick % (greenDuration + yellowDuration) < greenDuration ? 'green' : 'yellow'
+    //   for (let i = 0; i < center.lights.length; i++) {
+    //     if (i == greenYellowIndex) {
+    //       center.lights[i].state = greenYellowState
+    //     } else {
+    //       center.lights[i].state = 'red'
+    //     }
+    //   }
+    // }
+    this.frameCount++
+  }
+
   draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
+    this.updateLights()
+
     for (const env of this.envelopes) {
       env.draw(ctx, { fill: '#bbb', stroke: '#bbb', width: 1, lineWidth: 15 })
     }
