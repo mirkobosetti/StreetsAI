@@ -14,12 +14,12 @@ class Viewport {
   }
   center: Point
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, zoom = 1, offset = new Point(0, 0)) {
     this.canvas = canvas
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D
-    this.zoom = 1
+    this.zoom = zoom
     this.center = new Point(canvas.width / 2, canvas.height / 2)
-    this.offset = scale(this.center, -1)
+    this.offset = offset
     this.drag = {
       start: new Point(0, 0),
       end: new Point(0, 0),

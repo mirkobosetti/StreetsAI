@@ -20,7 +20,7 @@ const worldInfo = worldString ? JSON.parse(worldString) : null
   const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
   const graph = world.graph
 
-  const viewport = new Viewport(canvas)
+  const viewport = new Viewport(canvas, world.zoom, world.offset)
 
   const ui = new UI(graph, world, viewport)
 
