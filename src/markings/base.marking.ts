@@ -29,7 +29,7 @@ class Marking {
       translate(center, angle(directionVector), height / 2),
       translate(center, angle(directionVector), -height / 2)
     )
-    this.poly = new Envelope(this.support, width, 0).poly
+    this.poly = new Envelope(this.support, width, 0).poly!
   }
 
   // static load(info) {

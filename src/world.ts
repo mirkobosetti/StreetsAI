@@ -42,7 +42,7 @@ class World {
     this.generate()
   }
 
-  static load(info) {
+  static load(info: World) {
     const world = new World(new Graph([], []))
 
     world.graph = Graph.load(info.graph)

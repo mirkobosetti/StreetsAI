@@ -16,7 +16,7 @@ class Building {
     this.height = height
   }
 
-  static load(info) {
+  static load(info: Building) {
     return new Building(Polygon.load(info.base), info.height)
   }
 

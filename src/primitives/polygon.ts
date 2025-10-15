@@ -21,7 +21,7 @@ class Polygon {
   }
 
   /** Loads a polygon from a serialized format. */
-  static load(info) {
+  static load(info: Polygon) {
     return new Polygon(info.points.map((i) => new Point(i.x, i.y)))
   }
 

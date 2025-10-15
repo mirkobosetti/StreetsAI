@@ -17,7 +17,9 @@ class Envelope {
     }
   }
 
-  static load(info) {
+  static load(info: Envelope) {
+    if (!info.skeleton || !info.poly) return new Envelope()
+
     const env = new Envelope()
     env.skeleton = new Segment(info.skeleton.p1, info.skeleton.p2)
     env.poly = Polygon.load(info.poly)
@@ -25,11 +27,11 @@ class Envelope {
   }
 
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
-    this.poly.draw(ctx, options)
+    this.poly!.draw(ctx, options)
   }
 
   private generatePolygon(width: number, roundness: number): Polygon {
-    const { p1, p2 } = this.skeleton
+    const { p1, p2 } = this.skeleton!
 
     const radius = width / 2
     const alpha = angle(subtract(p1, p2))
