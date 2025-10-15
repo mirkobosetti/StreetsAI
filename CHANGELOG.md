@@ -7,6 +7,95 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2025-10-15
+
+### Added
+
+- **Load World System**: Complete world import and restoration functionality
+  - File input button (📁) for loading saved world files
+  - World file parsing and deserialization
+  - Automatic localStorage update after file load
+  - Page reload for clean world state restoration
+  - Support for `.world` file format
+- **World Save Enhancement**: Improved world export functionality
+  - Zoom level preservation in saved worlds
+  - Viewport offset preservation for exact camera position
+  - File download with `.world` extension
+  - Both file export and localStorage persistence
+- **Asynchronous World Loading**: Robust async initialization
+  - Async `World.load()` method for proper marking deserialization
+  - Promise-based marking reconstruction
+  - Dynamic marking class imports for code splitting
+  - Main application async initialization with IIFE pattern
+- **UI File Management**: Complete file I/O interface
+  - Hidden file input element for clean UI
+  - File selection dialog triggered programmatically
+  - File reader integration for world import
+  - User feedback for file selection errors
+
+### Enhanced
+
+- **Marking System**: Advanced marking deserialization
+  - Dynamic import system for marking classes
+  - Type-safe marking reconstruction
+  - Switch-case marking factory pattern
+  - Support for all 8 marking types (crossing, light, parking, start, stop, target, yield, base)
+  - Async marking creation pipeline
+- **World Persistence**: Complete world state management
+  - Comprehensive serialization including envelopes, road borders, buildings, trees, lane guides, markings
+  - Zoom and offset state preservation
+  - Full world reconstruction from JSON
+  - Configuration options persistence (road, building, tree)
+- **Type Safety**: Enhanced TypeScript types
+  - Proper async/await patterns in world loading
+  - Type-safe file reading and parsing
+  - Safe JSON deserialization with proper typing
+- **UI Integration**: Seamless load/save workflow
+  - Load button triggers file input automatically
+  - Save updates both file and localStorage
+  - Automatic page reload after load for clean state
+
+### Changed
+
+- **Main Application**: Async initialization pattern
+  - IIFE for top-level async/await support
+  - World loaded before viewport and UI initialization
+  - Proper async error handling
+- **Load Button**: File input trigger instead of localStorage only
+  - Load button now opens file dialog
+  - File input change event handler added
+  - User can import world files from disk
+- **World Class**: Async static load method
+  - `World.load()` now returns Promise<World>
+  - Marking deserialization awaited properly
+  - All world properties restored asynchronously
+
+### Technical Improvements
+
+- **Code Splitting**: Dynamic imports for marking classes
+  - Reduced initial bundle size
+  - Lazy loading of marking implementations
+  - Better tree-shaking opportunities
+  - Improved first-load performance
+- **State Management**: Robust world state handling
+  - Complete world state serialization
+  - Reliable state restoration
+  - Version-compatible world file format
+  - Safe fallback to empty world
+- **Error Handling**: User-friendly error messages
+  - Alert for missing file selection
+  - Safe JSON parsing with error handling
+  - Graceful fallback on load errors
+- **Memory Management**: Efficient file handling
+  - FileReader for safe file parsing
+  - Proper event cleanup after file read
+  - No memory leaks from file operations
+- **User Experience**: Smooth import/export workflow
+  - Seamless file selection process
+  - Visual feedback with file input
+  - Automatic state updates after load
+  - Clean world restoration with page reload
+
 ## [0.7.0] - 2025-10-15
 
 ### Added
