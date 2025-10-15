@@ -7,6 +7,131 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-10-15
+
+### Added
+
+- **Road Markings System**: Complete traffic control and navigation marking system
+  - Base Marking class for all road markings with support segments
+  - Stop marking with "STOP" text and border detection
+  - Yield marking with "YIELD" text and border detection
+  - Crossing marking with dashed white lines
+  - Light/Traffic light marking with tri-color lights (red, yellow, green)
+  - Parking marking with "P" symbol and dual borders
+  - Start marking with car icon for simulation starting points
+  - Target marking with bullseye design for destinations
+- **Marking Editor System**: Interactive marking placement and management
+  - Base MarkingEditor class with segment projection
+  - Dedicated editors for each marking type
+  - Real-time intent preview while hovering over roads
+  - Smart snapping to lane guides and road segments
+  - Right-click marking removal functionality
+  - Enable/disable mechanism for editor switching
+- **UI System**: Complete user interface management
+  - UI class for centralized control management
+  - Mode switching between graph editing and marking placement
+  - Visual button state feedback (green for active mode)
+  - Grayscale filter for inactive tools
+  - Organized control layout with left, center, and right sections
+- **Lane Guide Generation**: Automatic lane centerline generation
+  - Lane guides based on road width calculations
+  - Separate envelope generation for lane positioning
+  - Polygon union for clean lane guide segments
+  - Integration with marking editors for placement
+- **Editor Pattern**: Standardized editor interface
+  - `Editor` interface for consistent behavior
+  - Enable/disable lifecycle methods
+  - Display method for rendering editor state
+  - Event listener management with proper cleanup
+  - Bound event handlers for memory efficiency
+- **Enhanced Building Rendering**: Improved 3D building visualization
+  - Roof polygons with red tile appearance
+  - Depth-sorted roof sides for proper occlusion
+  - Building height parameter increased to 200 units
+  - Enhanced building structure with base, walls, ceiling, and roof
+  - Stroke outlines for better definition
+- **Utility Functions**: Extended geometric utilities
+  - `getNearestSegment` for finding closest road segment
+  - `perpendicular` for calculating perpendicular vectors
+  - `getFake3dPoint` for pseudo-3D coordinate transformation
+
+### Enhanced
+
+- **Project Structure**: Major architectural reorganization
+  - `editors/` directory for all editor classes
+  - `markings/` directory for all marking types
+  - `utils/` consolidated to single `utils/index.ts`
+  - Clear separation between primitives, items, markings, and editors
+- **Type System**: Comprehensive type definitions
+  - `MODES` constant for mode management
+  - `Modes` type for type-safe mode switching
+  - `MOUSE` constant for mouse button codes
+  - `MouseButtons` type for button identification
+  - `Editor` interface for editor implementation
+  - `Tool` interface for tool-editor-button binding
+  - `Tools` interface for complete tool collection
+  - Enhanced `drawOptions` with `join` and `cap` properties
+- **Event Handling**: Improved event management
+  - Bound event handlers for proper cleanup
+  - Enable/disable pattern for all editors
+  - Context menu prevention in all editors
+  - Proper event listener removal on disable
+- **Drawing Options**: Extended canvas drawing capabilities
+  - Line join style configuration (`join`)
+  - Line cap style configuration (`cap`)
+  - Enhanced polygon rendering with join options
+  - Segment rendering with cap styles
+- **World Integration**: Markings integrated into world system
+  - `markings` array in World class
+  - Markings rendered in draw pipeline
+  - Lane guides generation for marking placement
+  - Frame counter for potential animation timing
+
+### Changed
+
+- **Main Application**: Simplified with UI system
+  - UI instance manages all tools and editors
+  - Mode-based editor activation
+  - Reduced main.ts complexity
+  - All tools displayed via UI.tools iteration
+- **Controls Layout**: Redesigned control interface
+  - Three-section layout (left, center, right)
+  - Title in left section
+  - Marking tools in center section
+  - Save/dispose in right section
+  - Emoji-based intuitive buttons
+- **Import Paths**: Updated for new structure
+  - Utils imported from `./utils` (index file)
+  - Editors imported from `./editors/`
+  - Markings imported from `./markings/`
+  - Cleaner import organization
+- **Segment Drawing**: Default color changed from transparent to black
+  - Better visibility for road segments
+  - Consistent default behavior
+
+### Technical Improvements
+
+- **Editor Architecture**: Robust editor system
+  - Consistent lifecycle management
+  - Memory leak prevention with proper cleanup
+  - Type-safe editor implementations
+  - Reusable base classes for common functionality
+- **Marking System**: Flexible marking framework
+  - Envelope-based support segments
+  - Automatic polygon generation for collision
+  - Border segments for traffic control detection
+  - Customizable rendering per marking type
+- **Code Organization**: Improved maintainability
+  - Clear directory structure by functionality
+  - Consistent naming conventions
+  - Proper separation of concerns
+  - Scalable architecture for new features
+- **Performance**: Optimized rendering
+  - Conditional editor display based on active tool
+  - Efficient event listener management
+  - Smart redraw cycles
+  - Reduced memory footprint with proper cleanup
+
 ## [0.6.0] - 2025-10-14
 
 ### Added
