@@ -1,7 +1,11 @@
 import type CrossingEditor from '../editors/crossing.marking.editor'
 import type GraphEditor from '../editors/graph.editor'
+import type LightEditor from '../editors/light.marking.editor'
+import type ParkingEditor from '../editors/parking.marking.editor'
 import type StartEditor from '../editors/start.marking.editor'
 import type StopEditor from '../editors/stop.marking.editor'
+import type TargetEditor from '../editors/target.marking.editor'
+import type YieldEditor from '../editors/yield.marking.editor'
 
 export type Intersection = {
   x: number
@@ -20,6 +24,7 @@ export type drawOptions = {
   outline?: boolean
   fillCircle?: boolean
   join?: CanvasLineJoin
+  cap?: CanvasLineCap
 }
 
 export type BuildingOptions = {
@@ -42,7 +47,10 @@ export const MODES = {
   STOP: 'stop',
   CROSSING: 'crossing',
   START: 'start',
-  SEMAPHORE: 'semaphore'
+  LIGHT: 'light',
+  PARKING: 'parking',
+  TARGET: 'target',
+  YIELD: 'yield'
 }
 export type Modes = (typeof MODES)[keyof typeof MODES]
 
@@ -69,5 +77,9 @@ export interface Tools {
   stop: Tool<StopEditor>
   crossing: Tool<CrossingEditor>
   start: Tool<StartEditor>
+  light: Tool<LightEditor>
+  parking: Tool<ParkingEditor>
+  target: Tool<TargetEditor>
+  yield: Tool<YieldEditor>
   [key: string]: Tool<Editor>
 }
