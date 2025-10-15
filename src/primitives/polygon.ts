@@ -20,6 +20,11 @@ class Polygon {
     }
   }
 
+  /** Loads a polygon from a serialized format. */
+  static load(info) {
+    return new Polygon(info.points.map((i) => new Point(i.x, i.y)))
+  }
+
   /**
    * Computes the union of multiple polygons, returning the outer segments only.
    * @param polys Array of polygons to compute the union of.

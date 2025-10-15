@@ -1,6 +1,7 @@
-import type Graph from './graph'
+import Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
+import Marking from './markings/base.marking'
 import type Crossing from './markings/crossing.marking'
 import Light from './markings/light.marking'
 import type Stop from './markings/stop.marking'
@@ -39,6 +40,26 @@ class World {
     this.treeOptions = treeOptions
 
     this.generate()
+  }
+
+  static load(info) {
+    const world = new World(new Graph([], []))
+
+    world.graph = Graph.load(info.graph)
+
+    world.roadOptions = info.roadOptions
+    world.buildingOptions = info.buildingOptions
+    world.treeOptions = info.treeOptions
+
+    world.envelopes = info.envelopes.map((e) => Envelope.load(e))
+    world.roadBorders = info.roadBorders.map((b) => new Segment(b.p1, b.p2))
+    world.buildings = info.buildings.map((e) => Building.load(e))
+    world.trees = info.trees.map((t) => new Tree(t.center, world.treeOptions.size))
+    world.laneGuides = info.laneGuides.map((g) => new Segment(g.p1, g.p2))
+    // world.markings = info.markings.map((m) => Marking.load(m))
+    // world.zoom = info.zoom
+    // world.offset = info.offset
+    return world
   }
 
   /** Generate the world elements (buildings, trees, road borders, lane guides) */

@@ -1,15 +1,27 @@
 import { angle, subtract, translate } from '../utils'
 import type { drawOptions } from '../types'
 import Polygon from './polygon'
-import type Segment from './segment'
+import Segment from './segment'
 
 class Envelope {
-  skeleton: Segment
-  poly: Polygon
+  skeleton: Segment | null
+  poly: Polygon | null
 
-  constructor(skeleton: Segment, width: number, roundness = 1) {
-    this.skeleton = skeleton
-    this.poly = this.generatePolygon(width, roundness)
+  constructor(skeleton?: Segment, width?: number, roundness = 1) {
+    if (skeleton && width) {
+      this.skeleton = skeleton
+      this.poly = this.generatePolygon(width, roundness)
+    } else {
+      this.skeleton = null
+      this.poly = null
+    }
+  }
+
+  static load(info) {
+    const env = new Envelope()
+    env.skeleton = new Segment(info.skeleton.p1, info.skeleton.p2)
+    env.poly = Polygon.load(info.poly)
+    return env
   }
 
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {

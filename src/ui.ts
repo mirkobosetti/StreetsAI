@@ -44,7 +44,7 @@ class UI {
     this.world = world
 
     this.btnSave.addEventListener('click', () => {
-      localStorage.setItem('graph', JSON.stringify(graph))
+      localStorage.setItem('world', JSON.stringify(world))
     })
 
     this.btnDispose.addEventListener('click', () => {

@@ -12,10 +12,11 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 canvas.width = 900
 canvas.height = 900
 
-const savedGraph = localStorage.getItem('graph')
+const worldString = localStorage.getItem('world')
+const worldInfo = worldString ? JSON.parse(worldString) : null
+const world = worldInfo ? World.load(worldInfo) : new World(new Graph([], []))
+const graph = world.graph
 
-const graph = savedGraph ? Graph.load(JSON.parse(savedGraph)) : new Graph([], [])
-const world = new World(graph)
 const viewport = new Viewport(canvas)
 
 const ui = new UI(graph, world, viewport)
