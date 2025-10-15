@@ -1,5 +1,6 @@
 import type CrossingEditor from '../editors/crossing.marking.editor'
 import type GraphEditor from '../editors/graph.editor'
+import type StartEditor from '../editors/start.marking.editor'
 import type StopEditor from '../editors/stop.marking.editor'
 
 export type Intersection = {
@@ -40,6 +41,7 @@ export const MODES = {
   GRAPH: 'graph',
   STOP: 'stop',
   CROSSING: 'crossing',
+  START: 'start',
   SEMAPHORE: 'semaphore'
 }
 export type Modes = (typeof MODES)[keyof typeof MODES]
@@ -66,5 +68,6 @@ export interface Tools {
   graph: Tool<GraphEditor>
   stop: Tool<StopEditor>
   crossing: Tool<CrossingEditor>
+  start: Tool<StartEditor>
   [key: string]: Tool<Editor>
 }

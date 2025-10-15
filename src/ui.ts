@@ -1,5 +1,6 @@
 import CrossingEditor from './editors/crossing.marking.editor'
 import GraphEditor from './editors/graph.editor'
+import StartEditor from './editors/start.marking.editor'
 import StopEditor from './editors/stop.marking.editor'
 import type Graph from './graph'
 import { MODES, type Modes, type Tools } from './types'
@@ -12,6 +13,7 @@ class UI {
   private btnGraph: HTMLButtonElement
   private btnStop: HTMLButtonElement
   private btnCrossing: HTMLButtonElement
+  private btnStart: HTMLButtonElement
 
   graph: Graph
   world: World
@@ -24,6 +26,7 @@ class UI {
     this.btnGraph = document.getElementById('btnGraph') as HTMLButtonElement
     this.btnStop = document.getElementById('btnStop') as HTMLButtonElement
     this.btnCrossing = document.getElementById('btnCrossing') as HTMLButtonElement
+    this.btnStart = document.getElementById('btnStart') as HTMLButtonElement
 
     this.graph = graph
     this.world = world
@@ -41,11 +44,13 @@ class UI {
     this.btnGraph.addEventListener('click', () => this.setMode(MODES.GRAPH))
     this.btnStop.addEventListener('click', () => this.setMode(MODES.STOP))
     this.btnCrossing.addEventListener('click', () => this.setMode(MODES.CROSSING))
+    this.btnStart.addEventListener('click', () => this.setMode(MODES.START))
 
     this.tools = {
       graph: { button: this.btnGraph, editor: new GraphEditor(graph, viewport) },
       stop: { button: this.btnStop, editor: new StopEditor(world, viewport) },
-      crossing: { button: this.btnCrossing, editor: new CrossingEditor(world, viewport) }
+      crossing: { button: this.btnCrossing, editor: new CrossingEditor(world, viewport) },
+      start: { button: this.btnStart, editor: new StartEditor(world, viewport) }
     }
   }
 
