@@ -1,10 +1,11 @@
 import Graph from './graph'
-import GraphEditor from './graphEditor'
+import GraphEditor from './editors/graphEditor'
 import './style.css'
 import { MODES, type Modes } from './types'
-import { scale } from './utils/utils'
+import { scale } from './utils'
 import Viewport from './viewport'
 import World from './world'
+import StopEditor from './editors/stopEditor'
 
 const btnSave = document.getElementById('btnSave') as HTMLButtonElement
 const btnDispose = document.getElementById('btnDispose') as HTMLButtonElement
@@ -39,6 +40,7 @@ const graph = savedGraph ? Graph.load(JSON.parse(savedGraph)) : new Graph([], []
 const world = new World(graph)
 const viewport = new Viewport(canvas)
 const graphEditor = new GraphEditor(graph, viewport)
+const stopEditor = new StopEditor(world, viewport)
 
 let oldGraphHash = graph.hash()
 setMode(MODES.GRAPH)
@@ -54,6 +56,7 @@ function animate() {
   world.draw(ctx, viewPoint)
   ctx.globalAlpha = 0.2
   graphEditor.display()
+  stopEditor.display()
   requestAnimationFrame(animate)
 }
 
@@ -68,6 +71,7 @@ function setMode(mode: Modes) {
     case MODES.STOP:
       btnStop.style.backgroundColor = 'lightgreen'
       btnStop.style.filter = 'none'
+      stopEditor.enable()
       break
   }
 }
@@ -78,4 +82,5 @@ function disableEditors() {
   graphEditor.disable()
   btnStop.style.backgroundColor = 'gray'
   btnStop.style.filter = 'grayscale(100%)'
+  stopEditor.disable()
 }

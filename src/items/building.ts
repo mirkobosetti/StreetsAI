@@ -1,6 +1,6 @@
 import type Point from '../primitives/point'
 import Polygon from '../primitives/polygon'
-import { average, getFake3dPoint } from '../utils/utils'
+import { average, getFake3dPoint } from '../utils'
 
 class Building {
   base: Polygon

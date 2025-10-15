@@ -1,4 +1,4 @@
-import { average, getIntersection, getRandomColor } from '../utils/utils'
+import { average, getIntersection, getRandomColor } from '../utils'
 import type { drawOptions } from '../types'
 import Point from './point'
 import Segment from './segment'

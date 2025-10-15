@@ -1,8 +1,8 @@
-import type Graph from './graph'
-import { getNearestPoint } from './utils/utils'
-import Point from './primitives/point'
-import Segment from './primitives/segment'
-import type Viewport from './viewport'
+import type Graph from '../graph'
+import { getNearestPoint } from '../utils'
+import Point from '../primitives/point'
+import Segment from '../primitives/segment'
+import type Viewport from '../viewport'
 
 class GraphEditor {
   graph: Graph

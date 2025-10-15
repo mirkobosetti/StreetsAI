@@ -1,4 +1,4 @@
-import { angle, subtract, translate } from '../utils/utils'
+import { angle, subtract, translate } from '../utils'
 import type { drawOptions } from '../types'
 import Polygon from './polygon'
 import type Segment from './segment'

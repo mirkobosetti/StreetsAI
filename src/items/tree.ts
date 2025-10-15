@@ -1,6 +1,6 @@
 import Point from '../primitives/point'
 import Polygon from '../primitives/polygon'
-import { add, lerp, lerp2D, scale, subtract, translate } from '../utils/utils'
+import { add, lerp, lerp2D, scale, subtract, translate } from '../utils'
 
 class Tree {
   center: Point

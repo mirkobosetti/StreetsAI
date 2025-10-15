@@ -1,5 +1,5 @@
 import type { drawOptions } from '../types'
-import { add, distance, dot, magnitude, normalize, scale, subtract } from '../utils/utils'
+import { add, distance, dot, magnitude, normalize, scale, subtract } from '../utils'
 import type Point from './point'
 
 class Segment {

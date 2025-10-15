@@ -6,15 +6,16 @@ import Point from './primitives/point'
 import Polygon from './primitives/polygon'
 import Segment from './primitives/segment'
 import type { BuildingOptions, RoadOptions, TreeOptions } from './types'
-import { add, distance, lerp, scale } from './utils/utils'
+import { add, distance, lerp, scale } from './utils'
 
 class World {
   graph: Graph
 
-  envelopes: Envelope[]
-  roadBorders: Segment[]
-  buildings: Building[]
-  trees: Tree[]
+  envelopes: Envelope[] = []
+  roadBorders: Segment[] = []
+  buildings: Building[] = []
+  trees: Tree[] = []
+  laneGuides: Segment[] = []
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions
@@ -27,12 +28,6 @@ class World {
     treeOptions: TreeOptions = { size: 160 }
   ) {
     this.graph = graph
-
-    this.envelopes = []
-    this.roadBorders = []
-    this.buildings = []
-    this.trees = []
-
     this.roadOptions = roadOptions
     this.buildingOptions = buildingOptions
     this.treeOptions = treeOptions
@@ -50,6 +45,8 @@ class World {
     this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
     this.buildings = this.generateBuildings()
     this.trees = this.generateTrees()
+
+    this.laneGuides = this.generateLaneGuides()
   }
 
   private generateBuildings() {
@@ -174,6 +171,16 @@ class World {
       tryCount++
     }
     return trees
+  }
+
+  private generateLaneGuides(): Segment[] {
+    const tmpEnvelopes: Envelope[] = []
+    for (const seg of this.graph.segments) {
+      tmpEnvelopes.push(new Envelope(seg, this.roadOptions.width / 2, this.roadOptions.roundness))
+    }
+
+    const segments = Polygon.union(tmpEnvelopes.map((env) => env.poly))
+    return segments
   }
 
   draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
