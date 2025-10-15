@@ -35,3 +35,7 @@ button:hover {
   scale: 0.95;
   transition: all 0.2s;
 }
+
+input[type="file"] {
+  display: none;
+}

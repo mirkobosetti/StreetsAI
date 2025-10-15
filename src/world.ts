@@ -25,6 +25,9 @@ class World {
 
   frameCount: number = 0
 
+  zoom: number = 1
+  offset: Point = new Point(0, 0)
+
   constructor(
     graph: Graph,
     roadOptions: RoadOptions = { width: 100, roundness: 10 },
@@ -54,8 +57,8 @@ class World {
     world.trees = info.trees.map((t) => new Tree(t.center, world.treeOptions.size))
     world.laneGuides = info.laneGuides.map((g) => new Segment(g.p1, g.p2))
     world.markings = await Promise.all(info.markings.map((m) => Marking.load(m)))
-    // world.zoom = info.zoom
-    // world.offset = info.offset
+    world.zoom = info.zoom
+    world.offset = info.offset
     return world
   }
 

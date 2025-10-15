@@ -9,7 +9,7 @@ import YieldEditor from './editors/yield.marking.editor'
 import type Graph from './graph'
 import { MODES, type Modes, type Tools } from './types'
 import type Viewport from './viewport'
-import type World from './world'
+import World from './world'
 
 class UI {
   private btnSave: HTMLButtonElement
@@ -22,9 +22,12 @@ class UI {
   private btnParking: HTMLButtonElement
   private btnTarget: HTMLButtonElement
   private btnYield: HTMLButtonElement
+  private btnLoad: HTMLButtonElement
+  private fileInput: HTMLInputElement
 
   graph: Graph
   world: World
+  viewport: Viewport
 
   tools: Tools
 
@@ -39,14 +42,14 @@ class UI {
     this.btnParking = document.getElementById('btnParking') as HTMLButtonElement
     this.btnTarget = document.getElementById('btnTarget') as HTMLButtonElement
     this.btnYield = document.getElementById('btnYield') as HTMLButtonElement
+    this.btnLoad = document.getElementById('btnLoad') as HTMLButtonElement
+    this.fileInput = document.getElementById('fileInput') as HTMLInputElement
 
     this.graph = graph
     this.world = world
+    this.viewport = viewport
 
-    this.btnSave.addEventListener('click', () => {
-      console.log('Saving world...', this.world)
-      localStorage.setItem('world', JSON.stringify(this.world))
-    })
+    this.btnSave.addEventListener('click', () => this.save())
 
     this.btnDispose.addEventListener('click', () => {
       this.tools.graph.editor.dispose()
@@ -62,6 +65,8 @@ class UI {
     this.btnParking.addEventListener('click', () => this.setMode(MODES.PARKING))
     this.btnTarget.addEventListener('click', () => this.setMode(MODES.TARGET))
     this.btnYield.addEventListener('click', () => this.setMode(MODES.YIELD))
+    this.btnLoad.addEventListener('click', () => this.fileInput.click())
+    this.fileInput.addEventListener('change', (e) => this.load(e))
 
     this.tools = {
       graph: { button: this.btnGraph, editor: new GraphEditor(graph, viewport) },
@@ -72,6 +77,45 @@ class UI {
       parking: { button: this.btnParking, editor: new ParkingEditor(world, viewport) },
       target: { button: this.btnTarget, editor: new TargetEditor(world, viewport) },
       yield: { button: this.btnYield, editor: new YieldEditor(world, viewport) }
+    }
+  }
+
+  private save() {
+    this.world.zoom = this.viewport.zoom
+    this.world.offset = this.viewport.offset
+
+    const element = document.createElement('a')
+    element.setAttribute(
+      'href',
+      'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.world))
+    )
+
+    const fileName = 'name.world'
+    element.setAttribute('download', fileName)
+
+    element.click()
+
+    console.log('Saving world...', this.world)
+    localStorage.setItem('world', JSON.stringify(this.world))
+  }
+
+  private load(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.item(0)
+
+    if (!file) {
+      alert('No file selected.')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.readAsText(file)
+
+    reader.onload = (e) => {
+      const fileContent = e.target.result
+      const jsonData = JSON.parse(fileContent)
+      this.world = World.load(jsonData)
+      localStorage.setItem('world', JSON.stringify(this.world))
+      location.reload()
     }
   }
 
