@@ -34,6 +34,7 @@ class UI {
 
     this.btnDispose.addEventListener('click', () => {
       this.tools.graph.editor.dispose()
+      this.world.laneGuides.length = 0
       this.world.markings.length = 0
     })
 
