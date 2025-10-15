@@ -39,3 +39,10 @@ export const MODES = {
   SEMAPHORE: 'semaphore'
 }
 export type Modes = (typeof MODES)[keyof typeof MODES]
+
+export const MOUSE = {
+  LEFT: 0,
+  MIDDLE: 1,
+  RIGHT: 2
+}
+export type MouseButtons = (typeof MOUSE)[keyof typeof MOUSE]

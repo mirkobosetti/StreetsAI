@@ -1,12 +1,12 @@
 import Graph from './graph'
-import GraphEditor from './editors/graphEditor'
+import GraphEditor from './editors/graph.editor'
 import './style.css'
 import { MODES, type Modes } from './types'
 import { scale } from './utils'
 import Viewport from './viewport'
 import World from './world'
-import StopEditor from './editors/stopEditor'
-import CrossingEditor from './editors/crossingEditor'
+import StopEditor from './editors/stop.marking.editor'
+import CrossingEditor from './editors/crossing.marking.editor'
 
 const btnSave = document.getElementById('btnSave') as HTMLButtonElement
 const btnDispose = document.getElementById('btnDispose') as HTMLButtonElement
