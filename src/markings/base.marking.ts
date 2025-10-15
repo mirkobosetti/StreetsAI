@@ -3,13 +3,6 @@ import Point from '../primitives/point'
 import type Polygon from '../primitives/polygon'
 import Segment from '../primitives/segment'
 import { angle, translate } from '../utils'
-// import Crossing from './crossing.marking'
-// import Light from './light.marking'
-// import Parking from './parking.marking'
-// import Start from './start.marking'
-// import Stop from './stop.marking'
-// import Target from './target.marking'
-// import Yield from './yield.marking'
 
 class Marking {
   center: Point
@@ -32,28 +25,44 @@ class Marking {
     this.poly = new Envelope(this.support, width, 0).poly!
   }
 
-  // static load(info) {
-  //   const point = new Point(info.center.x, info.center.y)
-  //   const dir = new Point(info.directionVector.x, info.directionVector.y)
-  //   switch (info.type) {
-  //     case 'crossing':
-  //       return new Crossing(point, dir, info.width, info.height)
-  //     case 'light':
-  //       return new Light(point, dir, info.width)
-  //     case 'marking':
-  //       return new Marking(point, dir, info.width, info.height)
-  //     case 'parking':
-  //       return new Parking(point, dir, info.width, info.height)
-  //     case 'start':
-  //       return new Start(point, dir, info.width, info.height)
-  //     case 'stop':
-  //       return new Stop(point, dir, info.width, info.height)
-  //     case 'target':
-  //       return new Target(point, dir, info.width, info.height)
-  //     case 'yield':
-  //       return new Yield(point, dir, info.width, info.height)
-  //   }
-  // }
+  static async load(info: any): Promise<Marking> {
+    const point = new Point(info.center.x, info.center.y)
+    const dir = new Point(info.directionVector.x, info.directionVector.y)
+    switch (info.type) {
+      case 'crossing': {
+        const { default: Crossing } = await import('./crossing.marking')
+        return new Crossing(point, dir, info.width, info.height)
+      }
+      case 'light': {
+        const { default: Light } = await import('./light.marking')
+        return new Light(point, dir, info.width)
+      }
+      case 'marking':
+        return new Marking(point, dir, info.width, info.height)
+      case 'parking': {
+        const { default: Parking } = await import('./parking.marking')
+        return new Parking(point, dir, info.width, info.height)
+      }
+      case 'start': {
+        const { default: Start } = await import('./start.marking')
+        return new Start(point, dir, info.width, info.height)
+      }
+      case 'stop': {
+        const { default: Stop } = await import('./stop.marking')
+        return new Stop(point, dir, info.width, info.height)
+      }
+      case 'target': {
+        const { default: Target } = await import('./target.marking')
+        return new Target(point, dir, info.width, info.height)
+      }
+      case 'yield': {
+        const { default: Yield } = await import('./yield.marking')
+        return new Yield(point, dir, info.width, info.height)
+      }
+      default:
+        return new Marking(point, dir, info.width / 3, info.height / 3)
+    }
+  }
 
   draw(ctx: CanvasRenderingContext2D) {
     this.poly.draw(ctx)

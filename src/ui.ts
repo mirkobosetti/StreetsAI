@@ -44,7 +44,16 @@ class UI {
     this.world = world
 
     this.btnSave.addEventListener('click', () => {
-      localStorage.setItem('world', JSON.stringify(world))
+      // for each marking, save its type as well
+      const worldData = JSON.parse(JSON.stringify(this.world))
+      worldData.markings = this.world.markings.map((marking) => {
+        const markingData = JSON.parse(JSON.stringify(marking))
+        markingData.type =
+          marking.constructor.name.toLowerCase().replace('marking', '').trim() || 'marking'
+        return markingData
+      })
+      console.log('Saving world...', worldData)
+      localStorage.setItem('world', JSON.stringify(worldData))
     })
 
     this.btnDispose.addEventListener('click', () => {

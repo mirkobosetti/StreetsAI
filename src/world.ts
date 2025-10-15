@@ -2,15 +2,12 @@ import Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
 import Marking from './markings/base.marking'
-import type Crossing from './markings/crossing.marking'
-import Light from './markings/light.marking'
-import type Stop from './markings/stop.marking'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
 import Polygon from './primitives/polygon'
 import Segment from './primitives/segment'
 import type { BuildingOptions, RoadOptions, TreeOptions } from './types'
-import { add, distance, getNearestPoint, lerp, scale } from './utils'
+import { add, distance, lerp, scale } from './utils'
 
 class World {
   graph: Graph
@@ -20,7 +17,7 @@ class World {
   buildings: Building[] = []
   trees: Tree[] = []
   laneGuides: Segment[] = []
-  markings: (Stop | Crossing)[] = []
+  markings: Marking[] = []
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions
@@ -42,7 +39,7 @@ class World {
     this.generate()
   }
 
-  static load(info: World) {
+  static async load(info: World) {
     const world = new World(new Graph([], []))
 
     world.graph = Graph.load(info.graph)
@@ -56,7 +53,7 @@ class World {
     world.buildings = info.buildings.map((e) => Building.load(e))
     world.trees = info.trees.map((t) => new Tree(t.center, world.treeOptions.size))
     world.laneGuides = info.laneGuides.map((g) => new Segment(g.p1, g.p2))
-    // world.markings = info.markings.map((m) => Marking.load(m))
+    world.markings = await Promise.all(info.markings.map((m) => Marking.load(m)))
     // world.zoom = info.zoom
     // world.offset = info.offset
     return world

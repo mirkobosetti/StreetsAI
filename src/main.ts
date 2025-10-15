@@ -14,26 +14,30 @@ canvas.height = 900
 
 const worldString = localStorage.getItem('world')
 const worldInfo = worldString ? JSON.parse(worldString) : null
-const world = worldInfo ? World.load(worldInfo) : new World(new Graph([], []))
-const graph = world.graph
 
-const viewport = new Viewport(canvas)
+// Initialize world asynchronously
+;(async () => {
+  const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
+  const graph = world.graph
 
-const ui = new UI(graph, world, viewport)
+  const viewport = new Viewport(canvas)
 
-let oldGraphHash = graph.hash()
-ui.setMode(MODES.GRAPH)
-animate()
+  const ui = new UI(graph, world, viewport)
 
-function animate() {
-  viewport.reset()
-  if (oldGraphHash != graph.hash()) {
-    world.generate()
-    oldGraphHash = graph.hash()
+  let oldGraphHash = graph.hash()
+  ui.setMode(MODES.GRAPH)
+  animate()
+
+  function animate() {
+    viewport.reset()
+    if (oldGraphHash != graph.hash()) {
+      world.generate()
+      oldGraphHash = graph.hash()
+    }
+    const viewPoint = scale(viewport.getOffset(), -1)
+    world.draw(ctx, viewPoint)
+    ctx.globalAlpha = 0.2
+    Object.values(ui.tools).forEach((tool) => tool.editor.display())
+    requestAnimationFrame(animate)
   }
-  const viewPoint = scale(viewport.getOffset(), -1)
-  world.draw(ctx, viewPoint)
-  ctx.globalAlpha = 0.2
-  Object.values(ui.tools).forEach((tool) => tool.editor.display())
-  requestAnimationFrame(animate)
-}
+})()
