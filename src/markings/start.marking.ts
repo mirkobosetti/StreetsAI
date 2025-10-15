@@ -5,6 +5,7 @@ import carImage from '../assets/car.png'
 
 class Start extends Marking {
   image: HTMLImageElement
+  type = 'start'
 
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)

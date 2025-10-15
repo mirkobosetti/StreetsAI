@@ -5,6 +5,8 @@ import Marking from './base.marking'
 
 class Parking extends Marking {
   borders: Segment[] // use by cars to detect the parking area
+  type = 'parking'
+
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)
 

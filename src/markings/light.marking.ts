@@ -6,6 +6,7 @@ import Marking from './base.marking'
 class Light extends Marking {
   state: 'off' | 'red' | 'yellow' | 'green'
   border: Segment // use by cars to detect the light
+  type = 'light'
 
   constructor(center: Point, directionVector: Point, width: number) {
     super(center, directionVector, width, 18)

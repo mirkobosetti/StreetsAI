@@ -5,6 +5,7 @@ import Marking from './base.marking'
 
 class Stop extends Marking {
   border: Segment // use by cars to detect the stop
+  type = 'stop'
 
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)

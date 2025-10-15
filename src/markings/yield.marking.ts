@@ -5,6 +5,7 @@ import Marking from './base.marking'
 
 class Yield extends Marking {
   border: Segment
+  type = 'yield'
 
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)

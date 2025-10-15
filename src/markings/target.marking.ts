@@ -2,6 +2,8 @@ import type Point from '../primitives/point'
 import Marking from './base.marking'
 
 class Target extends Marking {
+  type = 'target'
+
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)
   }

@@ -5,6 +5,7 @@ import Marking from './base.marking'
 
 class Crossing extends Marking {
   borders: Segment[] // use by cars to detect the crossing
+  type = 'crossing'
 
   constructor(center: Point, directionVector: Point, width: number, height: number) {
     super(center, directionVector, width, height)
