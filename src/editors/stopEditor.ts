@@ -12,6 +12,7 @@ class StopEditor {
   ctx: CanvasRenderingContext2D
   intent: Stop | null = null
   mouse: Point = new Point(0, 0)
+  markings: Stop[] = []
 
   private boundMouseDown!: (event: MouseEvent) => void
   private boundMouseMove!: (event: MouseEvent) => void
@@ -24,6 +25,7 @@ class StopEditor {
     const context = this.canvas.getContext('2d')
     if (!context) throw new Error('Could not get canvas context')
     this.ctx = context
+    this.markings = world.markings
   }
 
   display() {
@@ -55,7 +57,25 @@ class StopEditor {
     this.canvas.removeEventListener('contextmenu', this.boundContextMenu)
   }
 
-  private handleMouseDown(event: MouseEvent) {}
+  private handleMouseDown(event: MouseEvent) {
+    if (event.button == 0) {
+      // left click
+      if (this.intent) {
+        this.markings.push(this.intent)
+        this.intent = null
+      }
+    }
+    if (event.button == 2) {
+      // right click
+      for (let i = 0; i < this.markings.length; i++) {
+        const poly = this.markings[i].poly
+        if (poly.containsPoint(this.mouse)) {
+          this.markings.splice(i, 1)
+          return
+        }
+      }
+    }
+  }
 
   private handleMouseMove(event: MouseEvent) {
     this.mouse = this.viewport.getMouse(event, true)

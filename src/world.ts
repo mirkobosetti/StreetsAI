@@ -1,6 +1,7 @@
 import type Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
+import type Stop from './markings/stop'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
 import Polygon from './primitives/polygon'
@@ -16,6 +17,7 @@ class World {
   buildings: Building[] = []
   trees: Tree[] = []
   laneGuides: Segment[] = []
+  markings: Stop[] = []
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions
@@ -186,6 +188,10 @@ class World {
   draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
     for (const env of this.envelopes) {
       env.draw(ctx, { fill: '#bbb', stroke: '#bbb', width: 1, lineWidth: 15 })
+    }
+
+    for (const marking of this.markings) {
+      marking.draw(ctx)
     }
 
     for (const segment of this.graph.segments) {
