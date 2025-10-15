@@ -1,39 +1,13 @@
 import Graph from './graph'
 import GraphEditor from './editors/graph.editor'
 import './style.css'
-import { MODES, type Modes } from './types'
+import { MODES } from './types'
 import { scale } from './utils'
 import Viewport from './viewport'
 import World from './world'
 import StopEditor from './editors/stop.marking.editor'
 import CrossingEditor from './editors/crossing.marking.editor'
-
-const btnSave = document.getElementById('btnSave') as HTMLButtonElement
-const btnDispose = document.getElementById('btnDispose') as HTMLButtonElement
-const btnGraph = document.getElementById('btnGraph') as HTMLButtonElement
-const btnStop = document.getElementById('btnStop') as HTMLButtonElement
-const btnCrossing = document.getElementById('btnCrossing') as HTMLButtonElement
-
-btnSave.addEventListener('click', () => {
-  localStorage.setItem('graph', JSON.stringify(graph))
-})
-
-btnDispose.addEventListener('click', () => {
-  graphEditor.dispose()
-  world.markings.length = 0
-})
-
-btnGraph.addEventListener('click', () => {
-  setMode(MODES.GRAPH)
-})
-
-btnStop.addEventListener('click', () => {
-  setMode(MODES.STOP)
-})
-
-btnCrossing.addEventListener('click', () => {
-  setMode(MODES.CROSSING)
-})
+import UI from './ui'
 
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -50,8 +24,10 @@ const graphEditor = new GraphEditor(graph, viewport)
 const stopEditor = new StopEditor(world, viewport)
 const crossingEditor = new CrossingEditor(world, viewport)
 
+const ui = new UI(graph, graphEditor, world, stopEditor, crossingEditor)
+
 let oldGraphHash = graph.hash()
-setMode(MODES.GRAPH)
+ui.setMode(MODES.GRAPH)
 animate()
 
 function animate() {
@@ -67,37 +43,4 @@ function animate() {
   stopEditor.display()
   crossingEditor.display()
   requestAnimationFrame(animate)
-}
-
-function setMode(mode: Modes) {
-  disableEditors()
-  switch (mode) {
-    case MODES.GRAPH:
-      btnGraph.style.backgroundColor = 'lightgreen'
-      btnGraph.style.filter = 'none'
-      graphEditor.enable()
-      break
-    case MODES.STOP:
-      btnStop.style.backgroundColor = 'lightgreen'
-      btnStop.style.filter = 'none'
-      stopEditor.enable()
-      break
-    case MODES.CROSSING:
-      btnCrossing.style.backgroundColor = 'lightgreen'
-      btnCrossing.style.filter = 'none'
-      crossingEditor.enable()
-      break
-  }
-}
-
-function disableEditors() {
-  btnGraph.style.backgroundColor = 'gray'
-  btnGraph.style.filter = 'grayscale(100%)'
-  graphEditor.disable()
-  btnStop.style.backgroundColor = 'gray'
-  btnStop.style.filter = 'grayscale(100%)'
-  stopEditor.disable()
-  btnCrossing.style.backgroundColor = 'gray'
-  btnCrossing.style.filter = 'grayscale(100%)'
-  crossingEditor.disable()
 }
