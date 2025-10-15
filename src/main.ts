@@ -6,11 +6,13 @@ import { scale } from './utils'
 import Viewport from './viewport'
 import World from './world'
 import StopEditor from './editors/stopEditor'
+import CrossingEditor from './editors/crossingEditor'
 
 const btnSave = document.getElementById('btnSave') as HTMLButtonElement
 const btnDispose = document.getElementById('btnDispose') as HTMLButtonElement
 const btnGraph = document.getElementById('btnGraph') as HTMLButtonElement
 const btnStop = document.getElementById('btnStop') as HTMLButtonElement
+const btnCrossing = document.getElementById('btnCrossing') as HTMLButtonElement
 
 btnSave.addEventListener('click', () => {
   localStorage.setItem('graph', JSON.stringify(graph))
@@ -29,6 +31,10 @@ btnStop.addEventListener('click', () => {
   setMode(MODES.STOP)
 })
 
+btnCrossing.addEventListener('click', () => {
+  setMode(MODES.CROSSING)
+})
+
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
@@ -42,6 +48,7 @@ const world = new World(graph)
 const viewport = new Viewport(canvas)
 const graphEditor = new GraphEditor(graph, viewport)
 const stopEditor = new StopEditor(world, viewport)
+const crossingEditor = new CrossingEditor(world, viewport)
 
 let oldGraphHash = graph.hash()
 setMode(MODES.GRAPH)
@@ -58,6 +65,7 @@ function animate() {
   ctx.globalAlpha = 0.2
   graphEditor.display()
   stopEditor.display()
+  crossingEditor.display()
   requestAnimationFrame(animate)
 }
 
@@ -74,6 +82,11 @@ function setMode(mode: Modes) {
       btnStop.style.filter = 'none'
       stopEditor.enable()
       break
+    case MODES.CROSSING:
+      btnCrossing.style.backgroundColor = 'lightgreen'
+      btnCrossing.style.filter = 'none'
+      crossingEditor.enable()
+      break
   }
 }
 
@@ -84,4 +97,7 @@ function disableEditors() {
   btnStop.style.backgroundColor = 'gray'
   btnStop.style.filter = 'grayscale(100%)'
   stopEditor.disable()
+  btnCrossing.style.backgroundColor = 'gray'
+  btnCrossing.style.filter = 'grayscale(100%)'
+  crossingEditor.disable()
 }

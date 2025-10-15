@@ -1,6 +1,7 @@
 import type Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
+import type Crossing from './markings/crossing'
 import type Stop from './markings/stop'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
@@ -17,7 +18,7 @@ class World {
   buildings: Building[] = []
   trees: Tree[] = []
   laneGuides: Segment[] = []
-  markings: Stop[] = []
+  markings: (Stop | Crossing)[] = []
 
   roadOptions: RoadOptions
   buildingOptions: BuildingOptions

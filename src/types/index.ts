@@ -34,6 +34,8 @@ export type TreeOptions = {
 
 export const MODES = {
   GRAPH: 'graph',
-  STOP: 'stop'
+  STOP: 'stop',
+  CROSSING: 'crossing',
+  SEMAPHORE: 'semaphore'
 }
 export type Modes = (typeof MODES)[keyof typeof MODES]

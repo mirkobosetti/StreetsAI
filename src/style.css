@@ -12,6 +12,13 @@ h1 {
   background-color: #2a5;
 }
 
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+}
+
 button {
   background-color: white;
   font-size: 2rem;

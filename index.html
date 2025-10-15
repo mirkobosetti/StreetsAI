@@ -9,11 +9,20 @@
   <body>
     <canvas id="myCanvas"></canvas>
 
-    <div id="controls">
-      <button id="btnSave">💾</button>
-      <button id="btnDispose">🗑️</button>
-      <button id="btnGraph">🌐</button>
-      <button id="btnStop">🛑</button>
+    <div class="controls">
+      <div class="left-controls">
+        <h1>Streets AI</h1>
+      </div>
+      <div class="center-controls">
+        <button id="btnGraph">🌐</button>
+        <button id="btnStop">🛑</button>
+        <button id="btnCrossing">🚸</button>
+        <!-- <button id="btnSemaphore">🚦</button> -->
+      </div>
+      <div class="right-controls">
+        <button id="btnSave">💾</button>
+        <button id="btnDispose">🗑️</button>
+      </div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

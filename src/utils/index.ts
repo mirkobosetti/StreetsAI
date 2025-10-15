@@ -119,3 +119,7 @@ export function getFake3dPoint(point: Point, viewPoint: Point, height: number): 
   const scaler = Math.atan(dist / 900) / (Math.PI / 2)
   return add(point, scale(dir, height * scaler))
 }
+
+export function perpendicular(p: Point): Point {
+  return new Point(-p.y, p.x)
+}
