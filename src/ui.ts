@@ -110,10 +110,10 @@ class UI {
     const reader = new FileReader()
     reader.readAsText(file)
 
-    reader.onload = (e) => {
-      const fileContent = e.target.result
-      const jsonData = JSON.parse(fileContent)
-      this.world = World.load(jsonData)
+    reader.onload = async (e) => {
+      const fileContent = e.target?.result
+      const jsonData = JSON.parse(fileContent as string)
+      this.world = await World.load(jsonData)
       localStorage.setItem('world', JSON.stringify(this.world))
       location.reload()
     }
