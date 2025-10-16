@@ -9,8 +9,13 @@ import UI from './ui'
 const canvas = document.getElementById('myCanvas') as HTMLCanvasElement
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-canvas.width = 900
-canvas.height = 900
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+})
 
 const worldString = localStorage.getItem('world')
 const worldInfo = worldString ? JSON.parse(worldString) : null
