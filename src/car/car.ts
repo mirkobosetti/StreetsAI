@@ -26,6 +26,7 @@ class Car {
     width: number,
     height: number,
     controlType: string,
+    angle = 0,
     maxSpeed = 3
   ) {
     this.x = x
@@ -37,7 +38,7 @@ class Car {
     this.acceleration = 0.2
     this.maxSpeed = maxSpeed
     this.friction = 0.05
-    this.angle = 0
+    this.angle = angle
 
     this.damaged = false
 

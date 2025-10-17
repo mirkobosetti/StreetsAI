@@ -2,6 +2,7 @@ import Graph from './graph'
 import Building from './items/building'
 import Tree from './items/tree'
 import Marking from './markings/base.marking'
+import Start from './markings/start.marking'
 import Envelope from './primitives/envelope'
 import Point from './primitives/point'
 import Polygon from './primitives/polygon'
@@ -27,6 +28,9 @@ class World {
 
   zoom: number = 1
   offset: Point = new Point(0, 0)
+
+  bestCar: any = null
+  cars: any[] = []
 
   constructor(
     graph: Graph,
@@ -286,7 +290,7 @@ class World {
     this.frameCount++
   }
 
-  draw(ctx: CanvasRenderingContext2D, viewPoint: Point) {
+  draw(ctx: CanvasRenderingContext2D, viewPoint: Point, showStartMarkings = true) {
     this.updateLights()
 
     for (const env of this.envelopes) {
@@ -294,7 +298,9 @@ class World {
     }
 
     for (const marking of this.markings) {
-      marking.draw(ctx)
+      if (showStartMarkings || !(marking instanceof Start)) {
+        marking.draw(ctx)
+      }
     }
 
     for (const segment of this.graph.segments) {
@@ -303,6 +309,15 @@ class World {
 
     for (const border of this.roadBorders) {
       border.draw(ctx, { color: 'white', width: 4 })
+    }
+
+    ctx.globalAlpha = 0.2
+    for (const car of this.cars) {
+      car.draw(ctx)
+    }
+    ctx.globalAlpha = 1
+    if (this.bestCar) {
+      this.bestCar.draw(ctx, true)
     }
 
     const items = [...this.buildings, ...this.trees]
