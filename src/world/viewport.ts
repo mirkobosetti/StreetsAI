@@ -1,4 +1,4 @@
-import { add, scale, subtract } from './utils'
+import { add, subtract } from './utils'
 import Point from './primitives/point'
 
 class Viewport {

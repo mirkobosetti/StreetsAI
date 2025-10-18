@@ -24,7 +24,6 @@ minimapCanvas.width = 300
 
 const carCtx = carCanvas.getContext('2d') as CanvasRenderingContext2D
 const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
-const minimapCtx = minimapCanvas.getContext('2d') as CanvasRenderingContext2D
 
 // const worldString = localStorage.getItem('world')
 // const worldInfo = worldString ? JSON.parse(worldString) : null
@@ -57,11 +56,12 @@ const minimapCtx = minimapCanvas.getContext('2d') as CanvasRenderingContext2D
   //   .map((s) => [s.p1, s.p2])
   const roadBorders = world.roadBorders.map((s) => [s.p1, s.p2])
   let bestCar = cars[0]
-  if (localStorage.getItem('bestBrain')) {
+  const savedBrain = localStorage.getItem('bestBrain')
+  if (savedBrain) {
     for (let i = 0; i < cars.length; i++) {
-      cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'))
-      if (i > 0) {
-        NeuralNetwork.mutate(cars[i].brain, 0.4)
+      cars[i].brain = JSON.parse(savedBrain)
+      if (i > 0 && cars[i].brain) {
+        NeuralNetwork.mutate(cars[i].brain!, 0.4)
       }
     }
   }
@@ -95,13 +95,15 @@ const minimapCtx = minimapCanvas.getContext('2d') as CanvasRenderingContext2D
     }
 
     networkCtx.clearRect(0, 0, networkCanvas.width, networkCanvas.height)
-    Visualizer.drawNetwork(networkCtx, bestCar.brain)
+    if (bestCar.brain) {
+      Visualizer.drawNetwork(networkCtx, bestCar.brain)
+    }
 
     requestAnimationFrame(animate)
   }
 
   function generateCars(N: number) {
-    const startPoints = world.markings.filter((m) => m instanceof Start)
+    const startPoints = world.markings.filter((m) => m instanceof Start) as Start[]
     const startPoint = startPoints.length > 0 ? startPoints[0].center : new Point(100, 100)
 
     const dir = startPoints.length > 0 ? startPoints[0].directionVector : new Point(0, -1)

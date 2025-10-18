@@ -4,10 +4,10 @@ import { degToRad, invLerp } from '../utils'
 
 class Osm {
   static parseRoads(data: any) {
-    const nodes = data.elements.filter((n) => n.type == 'node')
+    const nodes = data.elements.filter((n: any) => n.type == 'node')
 
-    const lats = nodes.map((n) => n.lat)
-    const lons = nodes.map((n) => n.lon)
+    const lats = nodes.map((n: any) => n.lat)
+    const lons = nodes.map((n: any) => n.lon)
 
     const minLat = Math.min(...lats)
     const maxLat = Math.max(...lats)
@@ -28,7 +28,7 @@ class Osm {
       points.push(new Point(x, y, node.id))
     }
 
-    const ways = data.elements.filter((w) => w.type == 'way')
+    const ways = data.elements.filter((w: any) => w.type == 'way')
     for (const way of ways) {
       const ids = way.nodes
       for (let i = 1; i < ids.length; i++) {
