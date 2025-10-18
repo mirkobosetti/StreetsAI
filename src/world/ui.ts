@@ -7,6 +7,7 @@ import StopEditor from './editors/stop.marking.editor'
 import TargetEditor from './editors/target.marking.editor'
 import YieldEditor from './editors/yield.marking.editor'
 import type Graph from './graph'
+import Osm from './osm'
 import { MODES, type Modes, type Tools } from './types'
 import type Viewport from './viewport'
 import World from './world'
@@ -24,6 +25,10 @@ class UI {
   private btnYield: HTMLButtonElement
   private btnLoad: HTMLButtonElement
   private fileInput: HTMLInputElement
+  private btnOsmPanel: HTMLButtonElement
+  private btnOsmParse: HTMLButtonElement
+  private btnOsmClose: HTMLButtonElement
+  private osmDataContainer: HTMLTextAreaElement
 
   graph: Graph
   world: World
@@ -44,6 +49,10 @@ class UI {
     this.btnYield = document.getElementById('btnYield') as HTMLButtonElement
     this.btnLoad = document.getElementById('btnLoad') as HTMLButtonElement
     this.fileInput = document.getElementById('fileInput') as HTMLInputElement
+    this.btnOsmPanel = document.getElementById('btnOpenOSM') as HTMLButtonElement
+    this.btnOsmParse = document.getElementById('btnParseOSM') as HTMLButtonElement
+    this.btnOsmClose = document.getElementById('btnCloseOSM') as HTMLButtonElement
+    this.osmDataContainer = document.getElementById('osmDataContainer') as HTMLTextAreaElement
 
     this.graph = graph
     this.world = world
@@ -67,6 +76,9 @@ class UI {
     this.btnYield.addEventListener('click', () => this.setMode(MODES.YIELD))
     this.btnLoad.addEventListener('click', () => this.fileInput.click())
     this.fileInput.addEventListener('change', (e) => this.load(e))
+    this.btnOsmPanel.addEventListener('click', () => this.openOsmPanel())
+    this.btnOsmParse.addEventListener('click', () => this.parseOsmData())
+    this.btnOsmClose.addEventListener('click', () => this.closeOsmPanel())
 
     this.tools = {
       graph: { button: this.btnGraph, editor: new GraphEditor(graph, viewport) },
@@ -78,6 +90,30 @@ class UI {
       target: { button: this.btnTarget, editor: new TargetEditor(world, viewport) },
       yield: { button: this.btnYield, editor: new YieldEditor(world, viewport) }
     }
+  }
+
+  private parseOsmData() {
+    if (!this.osmDataContainer.value) {
+      alert('No OSM data provided.')
+      return
+    }
+
+    const { points, segments } = Osm.parseRoads(JSON.parse(this.osmDataContainer.value))
+
+    this.graph.points = points
+    this.graph.segments = segments
+
+    this.closeOsmPanel()
+  }
+
+  private openOsmPanel() {
+    const osmPanel = document.getElementById('osmPanel') as HTMLDivElement
+    osmPanel.style.display = 'block'
+  }
+
+  private closeOsmPanel() {
+    const osmPanel = document.getElementById('osmPanel') as HTMLDivElement
+    osmPanel.style.display = 'none'
   }
 
   private save() {

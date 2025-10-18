@@ -5,10 +5,12 @@ import type Point from './point'
 class Segment {
   p1: Point
   p2: Point
+  oneWay: boolean
 
-  constructor(p1: Point, p2: Point) {
+  constructor(p1: Point, p2: Point, oneWay: boolean = false) {
     this.p1 = p1
     this.p2 = p2
+    this.oneWay = oneWay
   }
 
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
@@ -16,7 +18,7 @@ class Segment {
     ctx.lineWidth = options?.width ?? 2
     ctx.strokeStyle = options?.color ?? 'black'
     ctx.lineCap = options?.cap ?? 'butt'
-    ctx.setLineDash(options?.dash ?? [])
+    ctx.setLineDash(this.oneWay ? [4, 4] : options?.dash ?? [])
     ctx.moveTo(this.p1.x, this.p1.y)
     ctx.lineTo(this.p2.x, this.p2.y)
     ctx.stroke()

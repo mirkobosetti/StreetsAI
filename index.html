@@ -2,20 +2,43 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>JS - Self-driving Car - LIVE</title>
-  <link rel="stylesheet" href="/src/car/style.css">
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>streets-ai</title>
 </head>
 
 <body>
-  <canvas id="carCanvas"></canvas>
-  <div class="car-ai-buttons">
-    <button id="btnSave">💾</button>
-    <button id="btnReset">🗑️</button>
-  </div>
-  <canvas id="networkCanvas"></canvas>
-  <script defer type="module" src="/src/car/main.ts"></script>
+  <canvas id="myCanvas"></canvas>
 
+  <div class="controls">
+    <div class="center-controls">
+      <button id="btnGraph">🌐</button>
+      <button id="btnStop">🛑</button>
+      <button id="btnYield">⚠️</button>
+      <button id="btnCrossing">🚸</button>
+      <button id="btnParking">🅿️</button>
+      <button id="btnLight">🚦</button>
+      <button id="btnStart">🚙</button>
+      <button id="btnTarget">🎯</button>
+    </div>
+    <div class="right-controls">
+      <button id="btnSave">💾</button>
+      <button id="btnOpenOSM">🗺️</button>
+      <button id="btnLoad">📁</button>
+      <input type="file" id="fileInput" accept=".world" />
+      <button id="btnDispose">🗑️</button>
+    </div>
+  </div>
+  <div id="osmPanel" style="display:none;">
+    <textarea id="osmDataContainer" rows="10" cols="50" placeholder="Paste OSM data here"></textarea>
+    <div>
+      <button id="btnParseOSM" onclick="parseOsmData()">✔️</button>
+      <button id="btnCloseOSM" onclick="closeOsmPanel()">❌</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/world/main.ts"></script>
 </body>
 
 </html>

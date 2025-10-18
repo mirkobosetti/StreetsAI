@@ -117,3 +117,11 @@ export function getFake3dPoint(point: Point, viewPoint: Point, height: number): 
 export function perpendicular(p: Point): Point {
   return new Point(-p.y, p.x)
 }
+
+export function invLerp(a: number, b: number, v: number): number {
+  return (v - a) / (b - a)
+}
+
+export function degToRad(degree: number): number {
+  return (degree * Math.PI) / 180
+}
