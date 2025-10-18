@@ -7,6 +7,324 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2025-10-18
+
+### Added
+
+- **Minimap System**: Real-time navigation overview for car simulation
+  - `Minimap` class for bird's-eye view of the world
+  - Scaled-down road network visualization
+  - Real-time viewpoint tracking with red indicator
+  - 300x300px dedicated minimap canvas
+  - Dynamic camera position representation
+  - Synchronized with main viewport movement
+- **Minimap Canvas**: Dedicated UI element for navigation
+  - Separate `minimapCanvas` element in HTML
+  - Black background for contrast
+  - Fixed 300x300 dimensions for consistency
+  - Positioned alongside network visualizer
+  - Independent rendering context
+- **World File Loading**: File-based world initialization
+  - Automatic loading of `sclemo.world` on startup
+  - HTTP fetch-based world file retrieval
+  - Fallback to empty world on load failure
+  - Error handling for missing world files
+  - Pre-configured real-world map support
+- **Sclemo World Map**: Pre-built example world
+  - Real-world road network from Sclemo area
+  - Production-ready world file for testing
+  - Moved to root-level `/src/saves/` directory
+  - Accessible via HTTP fetch in car simulation
+  - Reference implementation for world structure
+
+### Enhanced
+
+- **HTML Structure**: Reorganized application entry points
+  - Main `index.html` now dedicated to car AI simulation
+  - New `index_world.html` for world editing mode
+  - Clear separation between editing and simulation interfaces
+  - Dual-canvas layout (car + network + minimap) in simulation mode
+  - Simplified HTML structure per application mode
+- **Car Simulation Interface**: Multi-canvas layout
+  - Main car canvas for simulation visualization
+  - Network canvas for neural network display (resized to accommodate minimap)
+  - Minimap canvas for navigation overview
+  - Optimized canvas sizing (network canvas height reduced by 300px)
+  - Vertically stacked network and minimap canvases
+- **Minimap Rendering**: Optimized visualization
+  - 0.05 scale factor for overview perspective
+  - Graph segment rendering with scaled line width (3 / scaler)
+  - White road coloring for visibility on black background
+  - Camera-centered rendering with translation and scaling
+  - Smooth context save/restore for clean rendering
+- **World Loading Strategy**: Shifted from localStorage to file-based
+  - Direct file loading instead of localStorage retrieval
+  - More reliable initial world state
+  - Easier sharing and version control of worlds
+  - Better separation between editing and simulation data
+
+### Changed
+
+- **Application Entry Points**: Swapped primary index files
+  - `index.html` now launches car AI simulation (was world editor)
+  - `index_world.html` now launches world editor (was index_car.html)
+  - Inverted file naming convention for better primary-secondary distinction
+  - Car simulation now the primary application mode
+- **Network Canvas Sizing**: Reduced height for minimap space
+  - Height changed from `window.innerHeight` to `window.innerHeight - 300`
+  - Makes room for 300px minimap below network visualizer
+  - Maintains 300px width for consistency
+  - Better vertical space utilization
+- **World Persistence**: Changed from localStorage to file-based
+  - Commented out localStorage world loading in car simulation
+  - Fetch-based loading from `/src/saves/sclemo.world`
+  - localStorage still available for world editor saving
+  - Clear distinction between editing and running modes
+- **Saves Directory Location**: Moved to root-level
+  - Changed from `src/world/saves/` to `src/saves/`
+  - Makes world files accessible to both world and car modules
+  - Cleaner project organization
+  - Easier HTTP access for file loading
+
+### Technical Improvements
+
+- **Minimap Rendering Pipeline**: Efficient scaled rendering
+  - Context transformation for proper scaling and translation
+  - ViewPoint-based camera tracking
+  - Scaled line width calculation for proper visibility
+  - Minimal computational overhead per frame
+- **Async World Loading**: Robust initialization
+  - Try-catch error handling for HTTP fetch
+  - Graceful fallback to empty world
+  - Console warnings for debugging
+  - Promise-based async/await pattern
+- **Canvas Management**: Multi-canvas orchestration
+  - Independent rendering contexts for each canvas
+  - Synchronized update cycles
+  - Proper canvas sizing on initialization
+  - Responsive layout support
+- **User Experience**: Enhanced navigation awareness
+  - Constant overview of position in world
+  - Visual feedback for camera movement
+  - Easier navigation in large worlds
+  - Reduced disorientation during exploration
+
+## [0.10.0] - 2025-10-18
+
+### Added
+
+- **OpenStreetMap (OSM) Integration**: Real-world map data import system
+  - `Osm` class for parsing OSM road network data
+  - Support for Overpass API JSON format
+  - Geographic coordinate conversion (latitude/longitude to canvas coordinates)
+  - Automatic aspect ratio preservation based on geographic bounds
+  - Scale calculation using Earth's curvature (111km per degree latitude)
+  - Cosine latitude correction for accurate longitude scaling
+- **OSM Query System**: Customizable road filtering
+  - Overpass QL query template for road extraction
+  - Comprehensive highway type filtering (excludes pedestrian, footway, cycleway, etc.)
+  - Access restriction filtering (excludes private and restricted roads)
+  - Support for bounding box queries
+  - Configurable road type selection for urban planning
+- **OSM UI Panel**: Interactive map import interface
+  - Dedicated OSM panel with textarea for data input
+  - Open panel button (🗺️) in main controls
+  - Parse button (✔️) to process OSM data
+  - Close button (❌) to dismiss panel
+  - Textarea placeholder for user guidance
+  - Modal-style panel overlay
+- **One-Way Road Support**: Directional road system
+  - One-way property added to `Segment` class
+  - Automatic one-way detection from OSM data
+  - Visual indication with dashed line pattern for one-way roads
+  - Lane count consideration for one-way classification
+- **Enhanced Point System**: ID-based point tracking
+  - Optional `id` parameter in `Point` constructor
+  - OSM node ID preservation for road network reconstruction
+  - Support for point matching by ID in graph operations
+- **Geographic Utilities**: Coordinate transformation functions
+  - `invLerp` for inverse linear interpolation
+  - `degToRad` for degree to radian conversion
+  - Geographic bounds calculation (min/max lat/lon)
+  - Coordinate normalization for canvas mapping
+- **Dual-Mode Application**: Separate world and car interfaces
+  - `index_car.html` for car AI simulation mode
+  - Main `index.html` for world editing mode
+  - Independent HTML entry points for different workflows
+  - Clear separation of concerns between editing and simulation
+- **World Save System**: Pre-saved world examples
+  - `sclemo.world` example world file
+  - World saves directory for organizing saved maps
+  - Reference implementations for world structure
+
+### Enhanced
+
+- **UI Controls**: Extended control panel
+  - OSM panel toggle button added to right controls
+  - Reorganized button layout with OSM integration
+  - Consistent icon-based interface across all features
+  - Modal panel system for complex operations
+- **Segment Rendering**: Visual distinction for road types
+  - Automatic dashed line rendering for one-way segments
+  - Override default dash pattern when one-way is true
+  - Visual feedback for directional road networks
+  - Improved road type identification
+- **World Editing Workflow**: Streamlined map creation
+  - Import real-world road networks from OSM
+  - Edit and enhance imported maps
+  - Add markings to real-world road layouts
+  - Export customized worlds for car simulation
+
+### Changed
+
+- **HTML Structure**: Reorganized entry points
+  - Moved car simulation to `index_car.html`
+  - Main `index.html` now dedicated to world editing
+  - Removed world editing HTML from `src/world/` directory
+  - Cleaner project organization with distinct modes
+- **Point Constructor**: Extended with optional ID
+  - ID parameter now optional for backward compatibility
+  - Enables OSM node tracking without breaking existing code
+- **Segment Constructor**: Added one-way parameter
+  - One-way parameter defaults to false
+  - Maintains backward compatibility with existing segments
+  - Enables directional road network modeling
+
+### Technical Improvements
+
+- **Geographic Projection**: Accurate coordinate transformation
+  - Mercator-like projection for mid-latitude accuracy
+  - Earth radius constant (111,000m per degree) for scaling
+  - Latitude-dependent longitude scaling for proper aspect ratio
+  - Minimal distortion for city-scale maps
+- **OSM Data Parsing**: Robust data extraction
+  - Node and way element filtering from OSM JSON
+  - ID-based point and segment reconstruction
+  - Proper handling of node references in ways
+  - One-way road detection from tags (oneway, lanes)
+- **Code Organization**: Enhanced modularity
+  - Dedicated `osm/` directory for OSM functionality
+  - Separation of query templates from parsing logic
+  - Clear import structure for OSM integration
+  - Reusable OSM utilities for future enhancements
+- **User Experience**: Intuitive map import workflow
+  - Simple paste-and-parse interface
+  - Clear visual feedback for OSM panel state
+  - Non-intrusive modal design
+  - Easy access to OSM features from main controls
+
+## [0.9.0] - 2025-10-18
+
+### Added
+
+- **Self-Driving Car AI System**: Complete neural network-based autonomous driving implementation
+  - Neural network (`Network` class) with configurable layers and neurons
+  - Forward propagation through network levels
+  - Sensor-based input system feeding neural network
+  - AI-controlled steering and acceleration
+  - Genetic algorithm for evolving car behavior
+- **Car Simulation Engine**: Realistic vehicle physics and control
+  - `Car` class with physics simulation (acceleration, friction, max speed)
+  - Polygon-based collision detection
+  - Fitness tracking for car performance evaluation
+  - Damage detection and disabled state handling
+  - Support for AI-controlled and manual "dummy" cars
+- **Advanced Sensor System**: Ray-casting sensor simulation
+  - `Sensor` class with configurable ray count and range
+  - Real-time obstacle detection using ray casting
+  - Visual sensor rendering with dynamic reading display
+  - Border and traffic detection capabilities
+  - Sensor readings normalized for neural network input
+- **Vehicle Control System**: Dual control mode support
+  - `Controls` class for keyboard and AI control modes
+  - Keyboard controls (arrow keys) for manual driving
+  - AI control integration with neural network output
+  - Forward/reverse/left/right movement handling
+- **Neural Network Visualizer**: Real-time network visualization
+  - `Visualizer` class for neural network state display
+  - Visual representation of network layers and connections
+  - Dynamic weight visualization with color coding
+  - Real-time activation state display
+  - Neuron and connection rendering with labels
+- **Level System**: Neural network layer management
+  - `Level` class representing network layers
+  - Input-output neuron connections with weights and biases
+  - Feedforward computation for layer activation
+  - Random weight and bias initialization
+- **Car AI Utilities**: Mathematical helpers for neural network
+  - Linear interpolation (`lerp`) for smooth value transitions
+  - Network serialization and mutation functions
+  - Utility functions for AI training support
+- **Car Persistence System**: Save and load AI brain functionality
+  - Save best-performing car brain to localStorage
+  - Load saved brain for continued training
+  - Reset functionality to clear saved progress
+  - UI buttons for save (💾) and reset (🗑️) operations
+- **World Integration**: Cars running on procedurally generated roads
+  - Integration of car simulation with existing world system
+  - Cars use world road borders for collision detection
+  - Realistic driving on generated road networks
+  - Removed standalone road visualization in favor of world roads
+
+### Enhanced
+
+- **Project Structure**: Major architectural reorganization
+  - New `car/` directory for all autonomous driving components
+  - Existing world system moved to `world/` directory
+  - Clear separation between world generation and car AI
+  - Modular architecture for car simulation components
+- **World Class**: Extended for car simulation support
+  - Added `getBestCar()` method for fitness-based selection
+  - Car array management within world
+  - Integrated car rendering in world draw pipeline
+  - Road borders accessible for car collision detection
+- **HTML Layout**: Enhanced UI for car AI controls
+  - Added car AI control section with save and reset buttons
+  - Updated button styling for car-specific controls
+  - Improved layout organization for dual functionality
+  - Visual consistency between world and car controls
+- **Main Application**: Dual-mode operation
+  - Separate main files for world editing and car simulation
+  - Car main (`src/car/main.ts`) for AI training mode
+  - World main for procedural generation and editing
+  - Independent styling for each mode
+
+### Changed
+
+- **File Organization**: Restructured for feature separation
+  - World files consolidated in `src/world/` directory
+  - Car AI files in dedicated `src/car/` directory
+  - Clear module boundaries between systems
+  - Improved maintainability and scalability
+
+### Technical Improvements
+
+- **Neural Network Architecture**: Efficient AI implementation
+  - Multi-layer perceptron with configurable depth
+  - Bias neurons for improved learning capacity
+  - Weighted connections between all layers
+  - Fast forward propagation for real-time control
+- **Genetic Algorithm**: Evolutionary AI training
+  - Fitness-based car selection for breeding
+  - Brain mutation for genetic variation
+  - Population-based learning approach
+  - Automatic best brain preservation
+- **Physics Simulation**: Realistic vehicle dynamics
+  - Friction and acceleration modeling
+  - Maximum speed constraints
+  - Realistic turning mechanics
+  - Polygon-based collision geometry
+- **Performance Optimization**: Efficient simulation
+  - Ray casting optimization for sensor readings
+  - Efficient collision detection algorithms
+  - Canvas rendering optimized for multiple cars
+  - Minimal computational overhead per frame
+- **Code Architecture**: Clean separation of concerns
+  - Modular class design for each component
+  - Clear interfaces between systems
+  - Reusable utility functions
+  - Type-safe TypeScript implementation
+
 ## [0.8.0] - 2025-10-15
 
 ### Added

@@ -3,10 +3,12 @@ import type { drawOptions } from '../types'
 class Point {
   x: number
   y: number
+  id?: string
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, id?: string) {
     this.x = x
     this.y = y
+    if (id) this.id = id
   }
 
   draw(ctx: CanvasRenderingContext2D, options?: drawOptions) {
