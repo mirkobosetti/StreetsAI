@@ -7,6 +7,110 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2025-10-18
+
+### Added
+
+- **OpenStreetMap (OSM) Integration**: Real-world map data import system
+  - `Osm` class for parsing OSM road network data
+  - Support for Overpass API JSON format
+  - Geographic coordinate conversion (latitude/longitude to canvas coordinates)
+  - Automatic aspect ratio preservation based on geographic bounds
+  - Scale calculation using Earth's curvature (111km per degree latitude)
+  - Cosine latitude correction for accurate longitude scaling
+- **OSM Query System**: Customizable road filtering
+  - Overpass QL query template for road extraction
+  - Comprehensive highway type filtering (excludes pedestrian, footway, cycleway, etc.)
+  - Access restriction filtering (excludes private and restricted roads)
+  - Support for bounding box queries
+  - Configurable road type selection for urban planning
+- **OSM UI Panel**: Interactive map import interface
+  - Dedicated OSM panel with textarea for data input
+  - Open panel button (🗺️) in main controls
+  - Parse button (✔️) to process OSM data
+  - Close button (❌) to dismiss panel
+  - Textarea placeholder for user guidance
+  - Modal-style panel overlay
+- **One-Way Road Support**: Directional road system
+  - One-way property added to `Segment` class
+  - Automatic one-way detection from OSM data
+  - Visual indication with dashed line pattern for one-way roads
+  - Lane count consideration for one-way classification
+- **Enhanced Point System**: ID-based point tracking
+  - Optional `id` parameter in `Point` constructor
+  - OSM node ID preservation for road network reconstruction
+  - Support for point matching by ID in graph operations
+- **Geographic Utilities**: Coordinate transformation functions
+  - `invLerp` for inverse linear interpolation
+  - `degToRad` for degree to radian conversion
+  - Geographic bounds calculation (min/max lat/lon)
+  - Coordinate normalization for canvas mapping
+- **Dual-Mode Application**: Separate world and car interfaces
+  - `index_car.html` for car AI simulation mode
+  - Main `index.html` for world editing mode
+  - Independent HTML entry points for different workflows
+  - Clear separation of concerns between editing and simulation
+- **World Save System**: Pre-saved world examples
+  - `sclemo.world` example world file
+  - World saves directory for organizing saved maps
+  - Reference implementations for world structure
+
+### Enhanced
+
+- **UI Controls**: Extended control panel
+  - OSM panel toggle button added to right controls
+  - Reorganized button layout with OSM integration
+  - Consistent icon-based interface across all features
+  - Modal panel system for complex operations
+- **Segment Rendering**: Visual distinction for road types
+  - Automatic dashed line rendering for one-way segments
+  - Override default dash pattern when one-way is true
+  - Visual feedback for directional road networks
+  - Improved road type identification
+- **World Editing Workflow**: Streamlined map creation
+  - Import real-world road networks from OSM
+  - Edit and enhance imported maps
+  - Add markings to real-world road layouts
+  - Export customized worlds for car simulation
+
+### Changed
+
+- **HTML Structure**: Reorganized entry points
+  - Moved car simulation to `index_car.html`
+  - Main `index.html` now dedicated to world editing
+  - Removed world editing HTML from `src/world/` directory
+  - Cleaner project organization with distinct modes
+- **Point Constructor**: Extended with optional ID
+  - ID parameter now optional for backward compatibility
+  - Enables OSM node tracking without breaking existing code
+- **Segment Constructor**: Added one-way parameter
+  - One-way parameter defaults to false
+  - Maintains backward compatibility with existing segments
+  - Enables directional road network modeling
+
+### Technical Improvements
+
+- **Geographic Projection**: Accurate coordinate transformation
+  - Mercator-like projection for mid-latitude accuracy
+  - Earth radius constant (111,000m per degree) for scaling
+  - Latitude-dependent longitude scaling for proper aspect ratio
+  - Minimal distortion for city-scale maps
+- **OSM Data Parsing**: Robust data extraction
+  - Node and way element filtering from OSM JSON
+  - ID-based point and segment reconstruction
+  - Proper handling of node references in ways
+  - One-way road detection from tags (oneway, lanes)
+- **Code Organization**: Enhanced modularity
+  - Dedicated `osm/` directory for OSM functionality
+  - Separation of query templates from parsing logic
+  - Clear import structure for OSM integration
+  - Reusable OSM utilities for future enhancements
+- **User Experience**: Intuitive map import workflow
+  - Simple paste-and-parse interface
+  - Clear visual feedback for OSM panel state
+  - Non-intrusive modal design
+  - Easy access to OSM features from main controls
+
 ## [0.9.0] - 2025-10-18
 
 ### Added
