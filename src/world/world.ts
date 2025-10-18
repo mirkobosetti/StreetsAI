@@ -74,7 +74,10 @@ class World {
       this.envelopes.push(new Envelope(segment, this.roadOptions.width, this.roadOptions.roundness))
     }
 
-    this.roadBorders = Polygon.union(this.envelopes.map((env) => env.poly))
+    this.roadBorders = Polygon.union(
+      this.envelopes.map((env) => env.poly).filter((poly) => poly !== null)
+    )
+
     this.buildings = this.generateBuildings()
     this.trees = this.generateTrees()
 
@@ -97,7 +100,9 @@ class World {
       )
     }
 
-    const guides = Polygon.union(tmpEnvelopes.map((env) => env.poly))
+    const guides = Polygon.union(
+      tmpEnvelopes.map((env) => env.poly).filter((poly) => poly !== null)
+    )
 
     for (let i = 0; i < guides.length; i++) {
       const element = guides[i]
@@ -138,8 +143,8 @@ class World {
     for (let i = 0; i < bases.length - 1; i++) {
       for (let j = i + 1; j < bases.length; j++) {
         if (
-          bases[i].intersectsPoly(bases[j]) ||
-          bases[i].distanceToPoly(bases[j]) < this.buildingOptions.spacing - eps
+          bases[i]!.intersectsPoly(bases[j]!) ||
+          bases[i]!.distanceToPoly(bases[j]!) < this.buildingOptions.spacing - eps
         ) {
           bases.splice(j, 1)
           j--
@@ -147,7 +152,7 @@ class World {
       }
     }
 
-    return bases.map((b) => new Building(b))
+    return bases.map((b) => new Building(b!))
   }
 
   /**
@@ -176,7 +181,7 @@ class World {
 
       let keep = true
       for (const poly of illegalPolys) {
-        if (poly.containsPoint(p) || poly.distanceToPoint(p) < this.treeOptions.size) {
+        if (poly!.containsPoint(p) || poly!.distanceToPoint(p) < this.treeOptions.size) {
           keep = false
           break
         }
@@ -196,7 +201,7 @@ class World {
       if (keep) {
         let closeToSomething = false
         for (const poly of illegalPolys) {
-          if (poly.distanceToPoint(p) < this.treeOptions.size * 2) {
+          if (poly!.distanceToPoint(p) < this.treeOptions.size * 2) {
             closeToSomething = true
             break
           }
@@ -223,7 +228,9 @@ class World {
       tmpEnvelopes.push(new Envelope(seg, this.roadOptions.width / 2, this.roadOptions.roundness))
     }
 
-    const segments = Polygon.union(tmpEnvelopes.map((env) => env.poly))
+    const segments = Polygon.union(
+      tmpEnvelopes.map((env) => env.poly).filter((poly) => poly !== null)
+    )
     return segments
   }
 
@@ -231,22 +238,22 @@ class World {
    * Get intersection points in the graph where more than two segments meet
    * @returns Array of intersection points
    */
-  private getIntersections(): Point[] {
-    const subset = []
-    for (const point of this.graph.points) {
-      let degree = 0
-      for (const seg of this.graph.segments) {
-        if (seg.includes(point)) {
-          degree++
-        }
-      }
+  // private getIntersections(): Point[] {
+  //   const subset = []
+  //   for (const point of this.graph.points) {
+  //     let degree = 0
+  //     for (const seg of this.graph.segments) {
+  //       if (seg.includes(point)) {
+  //         degree++
+  //       }
+  //     }
 
-      if (degree > 2) {
-        subset.push(point)
-      }
-    }
-    return subset
-  }
+  //     if (degree > 2) {
+  //       subset.push(point)
+  //     }
+  //   }
+  //   return subset
+  // }
 
   private updateLights() {
     //TODO: re-implement traffic light logic

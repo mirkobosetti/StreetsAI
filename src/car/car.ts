@@ -63,12 +63,14 @@ class Car {
     if (this.sensor) {
       this.sensor.update(this.x, this.y, this.angle, roadBorders, traffic)
       const offsets = this.sensor.readings.map((s) => (s == null ? 0 : 1 - s.offset))
-      const outputs = NeuralNetwork.feedForward(offsets, this.brain)
-      if (this.useBrain) {
-        this.controls.forward = outputs[0]
-        this.controls.left = outputs[1]
-        this.controls.right = outputs[2]
-        this.controls.reverse = outputs[3]
+      if (this.brain) {
+        const outputs = NeuralNetwork.feedForward(offsets, this.brain)
+        if (this.useBrain) {
+          this.controls.forward = !!outputs[0]
+          this.controls.left = !!outputs[1]
+          this.controls.right = !!outputs[2]
+          this.controls.reverse = !!outputs[3]
+        }
       }
     }
   }
