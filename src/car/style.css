@@ -12,3 +12,10 @@ body {
 #networkCanvas {
   background: black;
 }
+
+.car-ai-buttons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}

@@ -8,8 +8,14 @@
 </head>
 
 <body>
-  <canvas id="carCanvas"></canvas><canvas id="networkCanvas"></canvas>
-  <script type="module" src="/src/car/main.ts"></script>
+  <canvas id="carCanvas"></canvas>
+  <div class="car-ai-buttons">
+    <button id="btnSave">💾</button>
+    <button id="btnReset">🗑️</button>
+  </div>
+  <canvas id="networkCanvas"></canvas>
+  <script defer type="module" src="/src/car/main.ts"></script>
+
 </body>
 
 </html>

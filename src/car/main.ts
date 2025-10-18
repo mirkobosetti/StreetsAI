@@ -92,6 +92,12 @@ const worldInfo = worldString ? JSON.parse(worldString) : null
     return cars
   }
 
+  const saveButton = document.getElementById('btnSave') as HTMLButtonElement
+  const discardButton = document.getElementById('btnReset') as HTMLButtonElement
+
+  saveButton.onclick = save
+  discardButton.onclick = discard
+
   function save() {
     localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain))
   }
