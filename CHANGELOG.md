@@ -7,6 +7,108 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2025-10-18
+
+### Added
+
+- **Minimap System**: Real-time navigation overview for car simulation
+  - `Minimap` class for bird's-eye view of the world
+  - Scaled-down road network visualization
+  - Real-time viewpoint tracking with red indicator
+  - 300x300px dedicated minimap canvas
+  - Dynamic camera position representation
+  - Synchronized with main viewport movement
+- **Minimap Canvas**: Dedicated UI element for navigation
+  - Separate `minimapCanvas` element in HTML
+  - Black background for contrast
+  - Fixed 300x300 dimensions for consistency
+  - Positioned alongside network visualizer
+  - Independent rendering context
+- **World File Loading**: File-based world initialization
+  - Automatic loading of `sclemo.world` on startup
+  - HTTP fetch-based world file retrieval
+  - Fallback to empty world on load failure
+  - Error handling for missing world files
+  - Pre-configured real-world map support
+- **Sclemo World Map**: Pre-built example world
+  - Real-world road network from Sclemo area
+  - Production-ready world file for testing
+  - Moved to root-level `/src/saves/` directory
+  - Accessible via HTTP fetch in car simulation
+  - Reference implementation for world structure
+
+### Enhanced
+
+- **HTML Structure**: Reorganized application entry points
+  - Main `index.html` now dedicated to car AI simulation
+  - New `index_world.html` for world editing mode
+  - Clear separation between editing and simulation interfaces
+  - Dual-canvas layout (car + network + minimap) in simulation mode
+  - Simplified HTML structure per application mode
+- **Car Simulation Interface**: Multi-canvas layout
+  - Main car canvas for simulation visualization
+  - Network canvas for neural network display (resized to accommodate minimap)
+  - Minimap canvas for navigation overview
+  - Optimized canvas sizing (network canvas height reduced by 300px)
+  - Vertically stacked network and minimap canvases
+- **Minimap Rendering**: Optimized visualization
+  - 0.05 scale factor for overview perspective
+  - Graph segment rendering with scaled line width (3 / scaler)
+  - White road coloring for visibility on black background
+  - Camera-centered rendering with translation and scaling
+  - Smooth context save/restore for clean rendering
+- **World Loading Strategy**: Shifted from localStorage to file-based
+  - Direct file loading instead of localStorage retrieval
+  - More reliable initial world state
+  - Easier sharing and version control of worlds
+  - Better separation between editing and simulation data
+
+### Changed
+
+- **Application Entry Points**: Swapped primary index files
+  - `index.html` now launches car AI simulation (was world editor)
+  - `index_world.html` now launches world editor (was index_car.html)
+  - Inverted file naming convention for better primary-secondary distinction
+  - Car simulation now the primary application mode
+- **Network Canvas Sizing**: Reduced height for minimap space
+  - Height changed from `window.innerHeight` to `window.innerHeight - 300`
+  - Makes room for 300px minimap below network visualizer
+  - Maintains 300px width for consistency
+  - Better vertical space utilization
+- **World Persistence**: Changed from localStorage to file-based
+  - Commented out localStorage world loading in car simulation
+  - Fetch-based loading from `/src/saves/sclemo.world`
+  - localStorage still available for world editor saving
+  - Clear distinction between editing and running modes
+- **Saves Directory Location**: Moved to root-level
+  - Changed from `src/world/saves/` to `src/saves/`
+  - Makes world files accessible to both world and car modules
+  - Cleaner project organization
+  - Easier HTTP access for file loading
+
+### Technical Improvements
+
+- **Minimap Rendering Pipeline**: Efficient scaled rendering
+  - Context transformation for proper scaling and translation
+  - ViewPoint-based camera tracking
+  - Scaled line width calculation for proper visibility
+  - Minimal computational overhead per frame
+- **Async World Loading**: Robust initialization
+  - Try-catch error handling for HTTP fetch
+  - Graceful fallback to empty world
+  - Console warnings for debugging
+  - Promise-based async/await pattern
+- **Canvas Management**: Multi-canvas orchestration
+  - Independent rendering contexts for each canvas
+  - Synchronized update cycles
+  - Proper canvas sizing on initialization
+  - Responsive layout support
+- **User Experience**: Enhanced navigation awareness
+  - Constant overview of position in world
+  - Visual feedback for camera movement
+  - Easier navigation in large worlds
+  - Reduced disorientation during exploration
+
 ## [0.10.0] - 2025-10-18
 
 ### Added

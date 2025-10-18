@@ -5,6 +5,7 @@ import { angle, scale } from '../world/utils'
 import Viewport from '../world/viewport'
 import World from '../world/world'
 import Car from './car'
+import Minimap from './minimap'
 import NeuralNetwork from './network'
 import Visualizer from './visualizer'
 
@@ -87,7 +88,7 @@ const minimapCtx = minimapCanvas.getContext('2d') as CanvasRenderingContext2D
     viewport.reset()
     const viewPoint = scale(viewport.getOffset(), -1)
     world.draw(carCtx, viewPoint, false)
-    minimap.draw(viewPoint)
+    minimap.update(viewPoint)
 
     for (let i = 0; i < traffic.length; i++) {
       traffic[i].draw(carCtx)
