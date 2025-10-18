@@ -32,7 +32,7 @@ const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
 ;(async () => {
   let world: World
   try {
-    const response = await fetch('/src/saves/sclemo.world')
+    const response = await fetch('/saves/sclemo.world')
     if (response.ok) {
       const savedJson = await response.json()
       world = await World.load(savedJson)
