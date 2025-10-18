@@ -1,3 +1,4 @@
+import type Point from '../world/primitives/point'
 import Controls from './controls'
 import NeuralNetwork from './network'
 import Sensor from './sensor'
@@ -19,6 +20,7 @@ class Car {
   brain: NeuralNetwork | null = null
   controls: Controls
   polygon: { x: number; y: number }[] = []
+  fitness: number = 0
 
   constructor(
     x: number,
@@ -51,11 +53,12 @@ class Car {
     this.controls = new Controls(controlType)
   }
 
-  update(roadBorders, traffic) {
+  update(roadBorders: Point[][], traffic: Car[]) {
     if (!this.damaged) {
-      this.#move()
-      this.polygon = this.#createPolygon()
-      this.damaged = this.#assessDamage(roadBorders, traffic)
+      this.move()
+      this.fitness += this.speed
+      this.polygon = this.createPolygon()
+      this.damaged = this.assessDamage(roadBorders, traffic)
     }
     if (this.sensor) {
       this.sensor.update(this.x, this.y, this.angle, roadBorders, traffic)
@@ -70,7 +73,7 @@ class Car {
     }
   }
 
-  #assessDamage(roadBorders, traffic) {
+  private assessDamage(roadBorders: Point[][], traffic: Car[]) {
     for (let i = 0; i < roadBorders.length; i++) {
       if (polysIntersect([...this.polygon, this.polygon[0]], roadBorders[i])) {
         return true
@@ -85,7 +88,7 @@ class Car {
     return false
   }
 
-  #createPolygon() {
+  private createPolygon() {
     const points = []
     const rad = Math.hypot(this.width, this.height) / 2
     const alpha = Math.atan2(this.width, this.height)
@@ -108,7 +111,7 @@ class Car {
     return points
   }
 
-  #move() {
+  private move() {
     if (this.controls.forward) {
       this.speed += this.acceleration
     }

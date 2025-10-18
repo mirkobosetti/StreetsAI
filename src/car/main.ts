@@ -27,10 +27,14 @@ const worldInfo = worldString ? JSON.parse(worldString) : null
   const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
   const viewport = new Viewport(carCanvas, world.zoom, world.offset)
 
-  const N = 1
+  const N = 100
   const cars = generateCars(N)
   const traffic: Car[] = []
-  const roadBorders: { x: number; y: number }[] = []
+  // const roadBorders = world.buildings
+  //   .map((b) => b.base.segments)
+  //   .flat()
+  //   .map((s) => [s.p1, s.p2])
+  const roadBorders = world.roadBorders.map((s) => [s.p1, s.p2])
   let bestCar = cars[0]
   if (localStorage.getItem('bestBrain')) {
     for (let i = 0; i < cars.length; i++) {
@@ -50,7 +54,7 @@ const worldInfo = worldString ? JSON.parse(worldString) : null
     for (let i = 0; i < cars.length; i++) {
       cars[i].update(roadBorders, traffic)
     }
-    const finded = cars.find((c) => c.y == Math.min(...cars.map((c) => c.y)))
+    const finded = cars.find((c) => c.fitness == Math.max(...cars.map((c) => c.fitness)))
     world.cars = cars
     if (finded) {
       bestCar = finded
@@ -83,7 +87,7 @@ const worldInfo = worldString ? JSON.parse(worldString) : null
 
     const cars = []
     for (let i = 1; i <= N; i++) {
-      cars.push(new Car(startPoint.x, startPoint.y, 30, 50, 'KEYS', a))
+      cars.push(new Car(startPoint.x, startPoint.y, 30, 50, 'AI', a))
     }
     return cars
   }
