@@ -19,12 +19,25 @@ networkCanvas.width = 300
 const carCtx = carCanvas.getContext('2d') as CanvasRenderingContext2D
 const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
 
-const worldString = localStorage.getItem('world')
-const worldInfo = worldString ? JSON.parse(worldString) : null
+// const worldString = localStorage.getItem('world')
+// const worldInfo = worldString ? JSON.parse(worldString) : null
 
 // Initialize world asynchronously
 ;(async () => {
-  const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
+  let world: World
+  try {
+    const response = await fetch('/src/saves/sclemo.world')
+    if (response.ok) {
+      const savedJson = await response.json()
+      world = await World.load(savedJson)
+    } else {
+      world = new World(new Graph([], []))
+    }
+  } catch (error) {
+    console.warn('Could not load sclemo.world, using empty world:', error)
+    world = new World(new Graph([], []))
+  }
+  // const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
   const viewport = new Viewport(carCanvas, world.zoom, world.offset)
 
   const N = 100
