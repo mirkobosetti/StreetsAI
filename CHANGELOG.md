@@ -7,6 +7,118 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2025-10-18
+
+### Added
+
+- **Self-Driving Car AI System**: Complete neural network-based autonomous driving implementation
+  - Neural network (`Network` class) with configurable layers and neurons
+  - Forward propagation through network levels
+  - Sensor-based input system feeding neural network
+  - AI-controlled steering and acceleration
+  - Genetic algorithm for evolving car behavior
+- **Car Simulation Engine**: Realistic vehicle physics and control
+  - `Car` class with physics simulation (acceleration, friction, max speed)
+  - Polygon-based collision detection
+  - Fitness tracking for car performance evaluation
+  - Damage detection and disabled state handling
+  - Support for AI-controlled and manual "dummy" cars
+- **Advanced Sensor System**: Ray-casting sensor simulation
+  - `Sensor` class with configurable ray count and range
+  - Real-time obstacle detection using ray casting
+  - Visual sensor rendering with dynamic reading display
+  - Border and traffic detection capabilities
+  - Sensor readings normalized for neural network input
+- **Vehicle Control System**: Dual control mode support
+  - `Controls` class for keyboard and AI control modes
+  - Keyboard controls (arrow keys) for manual driving
+  - AI control integration with neural network output
+  - Forward/reverse/left/right movement handling
+- **Neural Network Visualizer**: Real-time network visualization
+  - `Visualizer` class for neural network state display
+  - Visual representation of network layers and connections
+  - Dynamic weight visualization with color coding
+  - Real-time activation state display
+  - Neuron and connection rendering with labels
+- **Level System**: Neural network layer management
+  - `Level` class representing network layers
+  - Input-output neuron connections with weights and biases
+  - Feedforward computation for layer activation
+  - Random weight and bias initialization
+- **Car AI Utilities**: Mathematical helpers for neural network
+  - Linear interpolation (`lerp`) for smooth value transitions
+  - Network serialization and mutation functions
+  - Utility functions for AI training support
+- **Car Persistence System**: Save and load AI brain functionality
+  - Save best-performing car brain to localStorage
+  - Load saved brain for continued training
+  - Reset functionality to clear saved progress
+  - UI buttons for save (💾) and reset (🗑️) operations
+- **World Integration**: Cars running on procedurally generated roads
+  - Integration of car simulation with existing world system
+  - Cars use world road borders for collision detection
+  - Realistic driving on generated road networks
+  - Removed standalone road visualization in favor of world roads
+
+### Enhanced
+
+- **Project Structure**: Major architectural reorganization
+  - New `car/` directory for all autonomous driving components
+  - Existing world system moved to `world/` directory
+  - Clear separation between world generation and car AI
+  - Modular architecture for car simulation components
+- **World Class**: Extended for car simulation support
+  - Added `getBestCar()` method for fitness-based selection
+  - Car array management within world
+  - Integrated car rendering in world draw pipeline
+  - Road borders accessible for car collision detection
+- **HTML Layout**: Enhanced UI for car AI controls
+  - Added car AI control section with save and reset buttons
+  - Updated button styling for car-specific controls
+  - Improved layout organization for dual functionality
+  - Visual consistency between world and car controls
+- **Main Application**: Dual-mode operation
+  - Separate main files for world editing and car simulation
+  - Car main (`src/car/main.ts`) for AI training mode
+  - World main for procedural generation and editing
+  - Independent styling for each mode
+
+### Changed
+
+- **File Organization**: Restructured for feature separation
+  - World files consolidated in `src/world/` directory
+  - Car AI files in dedicated `src/car/` directory
+  - Clear module boundaries between systems
+  - Improved maintainability and scalability
+
+### Technical Improvements
+
+- **Neural Network Architecture**: Efficient AI implementation
+  - Multi-layer perceptron with configurable depth
+  - Bias neurons for improved learning capacity
+  - Weighted connections between all layers
+  - Fast forward propagation for real-time control
+- **Genetic Algorithm**: Evolutionary AI training
+  - Fitness-based car selection for breeding
+  - Brain mutation for genetic variation
+  - Population-based learning approach
+  - Automatic best brain preservation
+- **Physics Simulation**: Realistic vehicle dynamics
+  - Friction and acceleration modeling
+  - Maximum speed constraints
+  - Realistic turning mechanics
+  - Polygon-based collision geometry
+- **Performance Optimization**: Efficient simulation
+  - Ray casting optimization for sensor readings
+  - Efficient collision detection algorithms
+  - Canvas rendering optimized for multiple cars
+  - Minimal computational overhead per frame
+- **Code Architecture**: Clean separation of concerns
+  - Modular class design for each component
+  - Clear interfaces between systems
+  - Reusable utility functions
+  - Type-safe TypeScript implementation
+
 ## [0.8.0] - 2025-10-15
 
 ### Added
