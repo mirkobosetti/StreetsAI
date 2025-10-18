@@ -10,14 +10,20 @@ import Visualizer from './visualizer'
 
 const carCanvas = document.getElementById('carCanvas') as HTMLCanvasElement
 const networkCanvas = document.getElementById('networkCanvas') as HTMLCanvasElement
+const minimapCanvas = document.getElementById('minimapCanvas') as HTMLCanvasElement
 
 carCanvas.height = window.innerHeight
 carCanvas.width = window.innerWidth - 330
-networkCanvas.height = window.innerHeight
+
+networkCanvas.height = window.innerHeight - 300
 networkCanvas.width = 300
+
+minimapCanvas.height = 300
+minimapCanvas.width = 300
 
 const carCtx = carCanvas.getContext('2d') as CanvasRenderingContext2D
 const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
+const minimapCtx = minimapCanvas.getContext('2d') as CanvasRenderingContext2D
 
 // const worldString = localStorage.getItem('world')
 // const worldInfo = worldString ? JSON.parse(worldString) : null
@@ -39,6 +45,7 @@ const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
   }
   // const world = worldInfo ? await World.load(worldInfo) : new World(new Graph([], []))
   const viewport = new Viewport(carCanvas, world.zoom, world.offset)
+  const minimap = new Minimap(minimapCanvas, world.graph, 300)
 
   const N = 100
   const cars = generateCars(N)
@@ -80,6 +87,7 @@ const networkCtx = networkCanvas.getContext('2d') as CanvasRenderingContext2D
     viewport.reset()
     const viewPoint = scale(viewport.getOffset(), -1)
     world.draw(carCtx, viewPoint, false)
+    minimap.draw(viewPoint)
 
     for (let i = 0; i < traffic.length; i++) {
       traffic[i].draw(carCtx)

@@ -13,6 +13,11 @@ body {
   background: black;
 }
 
+#minimapCanvas {
+  background: black;
+}
+
+
 .car-ai-buttons {
   position: absolute;
   top: 10px;
